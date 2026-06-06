@@ -341,6 +341,20 @@ async function getMatches(date){
 
 }
 
+async function checkExistingRecords(
+    tableId,
+    date
+){
+
+    const response =
+        await fetch(
+            `/api/check-records?table=${tableId}&date=${date}`
+        );
+
+    return await response.json();
+
+}
+
 loadUploadLog();
 
 async function parseCsv(file){
