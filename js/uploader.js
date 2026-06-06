@@ -400,6 +400,12 @@ function detectCategory(fileName){
     if(name.includes("original"))
         return "CONTENIDO_ORIGINAL";
 
+    if(name.includes("onlyphotos"))
+    return "ONLY_PHOTOS";
+
+    if(name.includes("casadelkun"))
+    return "LA_CASA_DEL_KUN";
+
     return "UNKNOWN";
 }
 
