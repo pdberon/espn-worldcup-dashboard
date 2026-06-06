@@ -1,1 +1,0 @@
-Estructura base del proyecto.
