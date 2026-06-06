@@ -185,7 +185,30 @@ async function generatePreview(){
         await getMatches(
             state.dataDate
         );
+    const socialExisting =
+    await checkExistingRecords(
+        "tbl1mS2oV7IQgAjv5",
+        state.dataDate
+    );
 
+const categoriesExisting =
+    await checkExistingRecords(
+        "tblUM5tCn6PqEve2p",
+        state.dataDate
+    );
+
+const websiteExisting =
+    await checkExistingRecords(
+        "tblDAqCKi02acc2Nf",
+        state.dataDate
+    );
+
+const youtubeExisting =
+    await checkExistingRecords(
+        "tblpGZTVf3Z02YWc8",
+        state.dataDate
+    );
+    
     let html = "";
 
     html += `
