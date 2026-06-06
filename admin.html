@@ -1,1 +1,190 @@
-<!DOCTYPE html><html><body><h1>Upload Center</h1></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ESPN World Cup Analytics - Upload Center</title>
+
+<link rel="stylesheet" href="css/styles.css">
+
+</head>
+
+<body>
+
+<div class="page">
+
+    <header class="header">
+
+        <div class="header-left">
+
+            <img
+                src="assets/logo.png"
+                class="logo"
+                alt="ESPN Mundial">
+
+            <div>
+
+                <h1>WORLD CUP ANALYTICS</h1>
+                <span>Upload Center</span>
+
+            </div>
+
+        </div>
+
+    </header>
+
+    <div class="content">
+
+        <div class="main">
+
+            <section class="card">
+
+                <h2>DATA DATE</h2>
+
+                <input
+                    type="date"
+                    id="dataDate"
+                    class="date-input">
+
+            </section>
+
+            <section class="card">
+
+                <h2>SOCIAL GENERAL</h2>
+
+                <div
+                    class="drop-zone"
+                    id="socialGeneralDrop">
+
+                    Drop ESPN Mundial CSV
+
+                </div>
+
+                <div
+                    id="socialGeneralFiles"
+                    class="file-list">
+
+                </div>
+
+            </section>
+
+            <section class="card">
+
+                <h2>SOCIAL CATEGORIES</h2>
+
+                <div
+                    class="drop-zone"
+                    id="socialCategoriesDrop">
+
+                    Drop Categories CSVs
+
+                </div>
+
+                <div
+                    id="socialCategoriesFiles"
+                    class="file-list">
+
+                </div>
+
+            </section>
+
+            <section class="card">
+
+                <h2>WEBSITE</h2>
+
+                <div
+                    class="drop-zone"
+                    id="websiteDrop">
+
+                    Drop Website CSV
+
+                </div>
+
+                <div
+                    id="websiteFiles"
+                    class="file-list">
+
+                </div>
+
+            </section>
+
+            <section class="card">
+
+                <h2>YOUTUBE</h2>
+
+                <div
+                    class="drop-zone"
+                    id="youtubeDrop">
+
+                    Drop YouTube CSVs
+
+                </div>
+
+                <div
+                    id="youtubeFiles"
+                    class="file-list">
+
+                </div>
+
+            </section>
+
+            <section class="card">
+
+                <h2>PREVIEW</h2>
+
+                <div id="previewContainer">
+
+                    Waiting for files...
+
+                </div>
+
+            </section>
+
+            <section class="actions">
+
+                <button
+                    id="previewBtn"
+                    class="btn">
+
+                    PREVIEW
+
+                </button>
+
+                <button
+                    id="uploadBtn"
+                    class="btn primary">
+
+                    UPLOAD TO AIRTABLE
+
+                </button>
+
+            </section>
+
+        </div>
+
+        <aside class="sidebar">
+
+            <div class="card">
+
+                <h2>LAST IMPORTS</h2>
+
+                <div id="uploadLog">
+
+                    Loading...
+
+                </div>
+
+            </div>
+
+        </aside>
+
+    </div>
+
+</div>
+
+<script src="js/uploader.js"></script>
+
+</body>
+</html>
