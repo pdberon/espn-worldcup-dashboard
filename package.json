@@ -1,1 +1,9 @@
-{ "name":"espn-worldcup-dashboard","version":"1.0.0" }
+{
+  "name": "espn-worldcup-dashboard",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "airtable": "^0.12.2"
+  }
+}
