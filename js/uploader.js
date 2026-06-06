@@ -189,60 +189,125 @@ async function generatePreview(){
     let html = "";
 
     html += `
-        <h3>Selected Date</h3>
+        <h3>Date</h3>
         <p>${state.dataDate}</p>
     `;
 
     html += `
-        <h3>Files</h3>
-
-        <ul>
-            <li>Social General:
-                ${state.socialGeneral.length}
-            </li>
-
-            <li>Social Categories:
-                ${state.socialCategories.length}
-            </li>
-
-            <li>Website:
-                ${state.website.length}
-            </li>
-
-            <li>YouTube:
-                ${state.youtube.length}
-            </li>
-        </ul>
+        <h3>Matches</h3>
     `;
 
-    html += `
-        <h3>Matches Found</h3>
-    `;
-
-    if(matches.length === 0){
-
-        html += `
-            <p>
-                No matches found
-            </p>
-        `;
-
-    }
-    else{
+    if(matches.length){
 
         html += "<ul>";
 
-        matches.forEach(match => {
+        matches.forEach(m=>{
 
             html += `
                 <li>
-                    ${match.match_name}
+                    ${m.match_name}
                 </li>
             `;
 
         });
 
         html += "</ul>";
+
+    }else{
+
+        html += `
+            No matches found
+        `;
+
+    }
+
+    html += `
+        <hr>
+        <h3>Social General</h3>
+    `;
+
+    for(const file of state.socialGeneral){
+
+        const rows =
+            await parseCsv(file);
+
+        html += `
+            <p>
+                <b>${file.name}</b>
+                <br>
+                Rows:
+                ${rows.length}
+                <br>
+                Account:
+                ${detectAccount(file.name)}
+            </p>
+        `;
+
+    }
+
+    html += `
+        <hr>
+        <h3>Social Categories</h3>
+    `;
+
+    for(const file of state.socialCategories){
+
+        const rows =
+            await parseCsv(file);
+
+        html += `
+            <p>
+                <b>${file.name}</b>
+                <br>
+                Category:
+                ${detectCategory(file.name)}
+                <br>
+                Rows:
+                ${rows.length}
+            </p>
+        `;
+
+    }
+
+    html += `
+        <hr>
+        <h3>Website</h3>
+    `;
+
+    for(const file of state.website){
+
+        const rows =
+            await parseCsv(file);
+
+        html += `
+            <p>
+                <b>${file.name}</b>
+                <br>
+                Rows:
+                ${rows.length}
+            </p>
+        `;
+
+    }
+
+    html += `
+        <hr>
+        <h3>YouTube</h3>
+    `;
+
+    for(const file of state.youtube){
+
+        const rows =
+            await parseCsv(file);
+
+        html += `
+            <p>
+                <b>${file.name}</b>
+                <br>
+                Rows:
+                ${rows.length}
+            </p>
+        `;
 
     }
 
@@ -277,6 +342,81 @@ async function getMatches(date){
 }
 
 loadUploadLog();
+
+async function parseCsv(file){
+
+    return new Promise((resolve,reject)=>{
+
+        Papa.parse(file,{
+
+            header:true,
+
+            skipEmptyLines:true,
+
+            complete:(results)=>{
+
+                resolve(results.data);
+
+            },
+
+            error:(error)=>{
+
+                reject(error);
+
+            }
+
+        });
+
+    });
+
+}
+
+function detectCategory(fileName){
+
+    const name =
+        fileName.toLowerCase();
+
+    if(name.includes("shows"))
+        return "SHOWS";
+
+    if(name.includes("acción"))
+        return "ACCION";
+
+    if(name.includes("accion"))
+        return "ACCION";
+
+    if(name.includes("aura"))
+        return "AURA_CAST";
+
+    if(name.includes("cobra"))
+        return "LA_COBRA";
+
+    if(name.includes("luzu"))
+        return "LUZU";
+
+    if(name.includes("kun"))
+        return "LA_CASA_DEL_KUN";
+
+    if(name.includes("original"))
+        return "CONTENIDO_ORIGINAL";
+
+    return "UNKNOWN";
+}
+
+function detectAccount(fileName){
+
+    const name =
+        fileName.toLowerCase();
+
+    if(name.includes("espnmundial"))
+        return "ESPN Mundial";
+
+    if(name.includes("onlyphotos"))
+        return "Only Photos";
+
+    return fileName;
+}
+
 
 async function loadUploadLog(){
 
