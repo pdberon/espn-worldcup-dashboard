@@ -50,9 +50,19 @@ export default async function handler(req,res){
                     row["Media Type"],
 
                 posts:
-                    Number(
-                        row["Volume of Published Messages (SUM)"] || 0
-                    ),
+    parseNumber(
+        row["Volume of Published Messages (SUM)"]
+    ),
+
+video_views:
+    parseNumber(
+        row["Total Video Views Cross Platform - BI (SUM)"]
+    ),
+
+engagement:
+    parseNumber(
+        row["Total Engagements Cross-Platform - BI (SUM)"]
+    ),
 
                 video_views:
                     Number(
@@ -142,7 +152,29 @@ function buildPrimaryKey(
     row
 ){
 
-    return `${uploadDate}_ESPNMUNDIAL_${row["Social Network"]}_${row["Media Type"]}`;
+    const account =
+        String(
+            row["Accounts"] || ""
+        )
+        .trim()
+        .replaceAll(" ","_")
+        .replaceAll("/","_");
+
+    const network =
+        String(
+            row["Social Network"] || ""
+        )
+        .trim()
+        .replaceAll(" ","_");
+
+    const mediaType =
+        String(
+            row["Media Type"] || ""
+        )
+        .trim()
+        .replaceAll(" ","_");
+
+    return `${uploadDate}_${account}_${network}_${mediaType}`;
 
 }
 
@@ -163,5 +195,25 @@ async function findExisting(
         .firstPage();
 
     return records[0] || null;
+
+}
+
+    function parseNumber(value){
+
+    if(
+        value === undefined ||
+        value === null ||
+        value === ""
+    ){
+
+        return 0;
+
+    }
+
+    return Number(
+        String(value)
+            .replaceAll(",","")
+            .trim()
+    );
 
 }
