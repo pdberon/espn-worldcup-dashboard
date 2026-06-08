@@ -567,28 +567,45 @@ uploadBtn.addEventListener(
         uploadBtn.innerText =
             "Uploading...";
 
-        let result = null;
+        let socialResult = null;
+        let categoriesResult = null;
 
         if(
             state.socialGeneral.length > 0
         ){
 
-            result =
-                await uploadSocialGeneral();
+        socialResult =
+            await uploadSocialGeneral();
+        if(
+    state.socialCategories.length > 0
+){
 
+    categoriesResult =
+        await uploadSocialCategories();
+
+}
         }
 
         console.log(
-            result
-        );
+    socialResult
+);
 
-        alert(
-            JSON.stringify(
-                result,
-                null,
-                2
-            )
-        );
+console.log(
+    categoriesResult
+);
+
+        alert(`
+Social
+
+Created:
+${socialResult?.created || 0}
+
+Updated:
+${socialResult?.updated || 0}
+
+Categories Files:
+${categoriesResult?.length || 0}
+`);
 
     }
     catch(error){
@@ -658,5 +675,67 @@ uploadBtn.addEventListener(
         );
 
     return await response.json();
+
+}
+            async function uploadSocialCategories(){
+
+    const matches =
+        await getMatches(
+            state.dataDate
+        );
+
+    const results = [];
+
+    for(const file of state.socialCategories){
+
+        const rows =
+            await parseCsv(file);
+
+        if(rows.length === 0){
+
+            continue;
+
+        }
+
+        const category =
+            detectCategory(
+                file.name
+            );
+
+        const response =
+            await fetch(
+                "/api/upload-social-categories",
+                {
+                    method:"POST",
+
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:JSON.stringify({
+
+                        uploadDate:
+                            state.dataDate,
+
+                        matches,
+
+                        category,
+
+                        records:
+                            rows
+
+                    })
+                }
+            );
+
+        const result =
+            await response.json();
+
+        results.push(result);
+
+    }
+
+    return results;
 
 }
