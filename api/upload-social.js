@@ -65,7 +65,9 @@ export default async function handler(req,res){
                     ),
 
                 account_name:
-                    "ESPN Mundial",
+                    row["Accounts"] ||
+                    row["Account"] ||
+                    "",
 
                 tournament_day:
                     matches?.[0]?.tournament_day || null,
