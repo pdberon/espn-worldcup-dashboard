@@ -548,11 +548,5 @@ loadUploadLog();
 
 uploadBtn.addEventListener(
     "click",
-    () => {
-
-        alert(
-            "Upload Engine Coming Soon"
-        );
-
-    }
+    uploadData
 );
