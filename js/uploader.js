@@ -2,12 +2,14 @@ const state = {
     dataDate: null,
 
     socialGeneral: [],
-
     socialCategories: [],
-
     website: [],
+    youtube: [],
 
-    youtube: []
+    validation: {
+        ready: true,
+        errors: []
+    }
 };
 
 const socialGeneralDrop =
@@ -172,6 +174,12 @@ async function generatePreview(){
     previewContainer.innerHTML =
         "Generating preview...";
 
+    resetValidation();
+
+validateRequiredFiles();
+
+validateCategories();
+    
     if(!state.dataDate){
 
         previewContainer.innerHTML =
@@ -334,6 +342,56 @@ const youtubeExisting =
 
     }
 
+    html += `
+<hr>
+<h3>Validation</h3>
+`;
+
+if(
+    state.validation.ready
+){
+
+    html += `
+        <p
+            style="
+                color:#00ff88;
+                font-weight:bold;
+            "
+        >
+            READY
+        </p>
+    `;
+
+}
+else{
+
+    html += `
+        <p
+            style="
+                color:#ff4444;
+                font-weight:bold;
+            "
+        >
+            ERROR
+        </p>
+    `;
+
+    html += "<ul>";
+
+    state.validation.errors
+        .forEach(error=>{
+
+            html += `
+                <li>
+                    ${error}
+                </li>
+            `;
+
+        });
+
+    html += "</ul>";
+
+}
     previewContainer.innerHTML =
         html;
 
@@ -448,6 +506,72 @@ function detectCategory(fileName){
 
 function detectAccount(fileName){
 
+    function resetValidation(){
+
+    state.validation.ready = true;
+
+    state.validation.errors = [];
+
+}
+
+function addValidationError(message){
+
+    state.validation.ready = false;
+
+    state.validation.errors.push(message);
+
+}
+    function validateCategories(){
+
+    for(const file of state.socialCategories){
+
+        const category =
+            detectCategory(file.name);
+
+        if(category === "UNKNOWN"){
+
+            addValidationError(
+                `Unknown category: ${file.name}`
+            );
+
+        }
+
+    }
+
+}
+    function validateRequiredFiles(){
+
+    if(
+        state.socialGeneral.length === 0
+    ){
+
+        addValidationError(
+            "Missing Social General file"
+        );
+
+    }
+
+    if(
+        state.website.length === 0
+    ){
+
+        addValidationError(
+            "Missing Website file"
+        );
+
+    }
+
+    if(
+        state.youtube.length === 0
+    ){
+
+        addValidationError(
+            "Missing YouTube files"
+        );
+
+    }
+
+}
     const name =
         fileName.toLowerCase();
 
