@@ -1,11 +1,11 @@
 import base, { TABLES } from "../lib/airtable.js";
 
-export default async function handler(req, res) {
+export default async function handler(req,res){
 
     if(req.method !== "POST"){
 
         return res.status(405).json({
-            error: "Method not allowed"
+            error:"Method not allowed"
         });
 
     }
@@ -13,27 +13,22 @@ export default async function handler(req, res) {
     try{
 
         const {
-            records,
             uploadDate,
             matches,
-            tournamentDay
+            records
         } = req.body;
 
-        if(!records || !records.length){
-
-            return res.status(400).json({
-                error: "No records supplied"
-            });
-
-        }
-
         let created = 0;
+
         let updated = 0;
 
         for(const row of records){
 
             const primaryKey =
-                buildPrimaryKey(row);
+                buildPrimaryKey(
+                    uploadDate,
+                    row
+                );
 
             const existing =
                 await findExisting(
@@ -48,31 +43,39 @@ export default async function handler(req, res) {
                 fecha:
                     uploadDate,
 
-                account_name:
-                    row.account_name,
-
                 network:
-                    row.network,
+                    row["Social Network"],
 
                 media_type:
-                    row.media_type,
+                    row["Media Type"],
 
                 posts:
-                    Number(row.posts || 0),
-
-                video_views:
-                    Number(row.video_views || 0),
-
-                engagement:
-                    Number(row.engagement || 0),
-
-                is_sports_account:
-                    Boolean(
-                        row.is_sports_account
+                    Number(
+                        row["Volume of Published Messages (SUM)"] || 0
                     ),
 
+                video_views:
+                    Number(
+                        row["Total Video Views Cross Platform - BI (SUM)"] || 0
+                    ),
+
+                engagement:
+                    Number(
+                        row["Total Engagements Cross-Platform - BI (SUM)"] || 0
+                    ),
+
+                account_name:
+                    "ESPN Mundial",
+
                 tournament_day:
-                    tournamentDay || null
+                    matches?.[0]?.tournament_day || null,
+
+                matchday:
+                    matches?.[0]?.matchday || null,
+
+                stage:
+                    matches?.[0]?.stage || null
+
             };
 
             if(existing){
@@ -81,14 +84,15 @@ export default async function handler(req, res) {
                     TABLES.social
                 ).update([
                     {
-                        id: existing.id,
+                        id:existing.id,
                         fields
                     }
                 ]);
 
                 updated++;
 
-            }else{
+            }
+            else{
 
                 await base(
                     TABLES.social
@@ -103,20 +107,6 @@ export default async function handler(req, res) {
             }
 
         }
-
-        await writeUploadLog({
-
-            uploadType:
-                "SOCIAL",
-
-            created,
-
-            updated,
-
-            recordsFound:
-                records.length
-
-        });
 
         return res.status(200).json({
 
@@ -145,36 +135,12 @@ export default async function handler(req, res) {
 
 }
 
-function buildPrimaryKey(row){
+function buildPrimaryKey(
+    uploadDate,
+    row
+){
 
-    const date =
-        row.fecha
-            .replaceAll("-","");
-
-    const account =
-        sanitize(
-            row.account_name
-        );
-
-    const network =
-        sanitize(
-            row.network
-        );
-
-    const mediaType =
-        sanitize(
-            row.media_type
-        );
-
-    return `${date}_${account}_${network}_${mediaType}`;
-
-}
-
-function sanitize(value){
-
-    return String(value || "")
-        .toUpperCase()
-        .replaceAll(" ","_");
+    return `${uploadDate}_ESPNMUNDIAL_${row["Social Network"]}_${row["Media Type"]}`;
 
 }
 
@@ -189,56 +155,11 @@ async function findExisting(
         .select({
 
             filterByFormula:
-                `{primary_key}='${primaryKey}'`
+                `{primary_key}="${primaryKey}"`
 
         })
         .firstPage();
 
     return records[0] || null;
-
-}
-
-async function writeUploadLog(data){
-
-    const timestamp =
-        new Date()
-        .toISOString();
-
-    await base(
-        TABLES.uploadLog
-    ).create([{
-
-        fields:{
-
-            primary_key:
-                `UPLOAD_${timestamp}`,
-
-            upload_batch_id:
-                timestamp,
-
-            upload_type:
-                data.uploadType,
-
-            upload_date:
-                timestamp,
-
-            records_found:
-                data.recordsFound,
-
-            records_created:
-                data.created,
-
-            records_updated:
-                data.updated,
-
-            records_failed:
-                0,
-
-            status:
-                "SUCCESS"
-
-        }
-
-    }]);
 
 }
