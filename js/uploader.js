@@ -37,9 +37,7 @@ const dataDate =
     document.getElementById("dataDate");
 
 dataDate.addEventListener("change", () => {
-
     state.dataDate = dataDate.value;
-
 });
 
 setupDropZone(
@@ -75,9 +73,7 @@ function setupDropZone(
     element.addEventListener(
         "dragover",
         e => {
-
             e.preventDefault();
-
         }
     );
 
@@ -164,6 +160,69 @@ function renderFileList(
 
 }
 
+function resetValidation(){
+
+    state.validation.ready = true;
+    state.validation.errors = [];
+
+}
+
+function addValidationError(message){
+
+    state.validation.ready = false;
+    state.validation.errors.push(message);
+
+}
+
+function validateRequiredFiles(){
+
+    if(state.socialGeneral.length === 0){
+
+        addValidationError(
+            "Missing Social General file"
+        );
+
+    }
+
+    if(state.website.length === 0){
+
+        addValidationError(
+            "Missing Website file"
+        );
+
+    }
+
+    if(state.youtube.length === 0){
+
+        addValidationError(
+            "Missing YouTube files"
+        );
+
+    }
+
+}
+
+function validateCategories(){
+
+    for(const file of state.socialCategories){
+
+        const category =
+            detectCategory(
+                file.name
+            );
+
+        if(category === "UNKNOWN"){
+
+            addValidationError(
+                `Unknown category: ${file.name}`
+            );
+
+        }
+
+    }
+
+}
+
 previewBtn.addEventListener(
     "click",
     generatePreview
@@ -174,12 +233,6 @@ async function generatePreview(){
     previewContainer.innerHTML =
         "Generating preview...";
 
-    resetValidation();
-
-validateRequiredFiles();
-
-validateCategories();
-    
     if(!state.dataDate){
 
         previewContainer.innerHTML =
@@ -189,34 +242,17 @@ validateCategories();
 
     }
 
+    resetValidation();
+
+    validateRequiredFiles();
+
+    validateCategories();
+
     const matches =
         await getMatches(
             state.dataDate
         );
-    const socialExisting =
-    await checkExistingRecords(
-        "tbl1mS2oV7IQgAjv5",
-        state.dataDate
-    );
 
-const categoriesExisting =
-    await checkExistingRecords(
-        "tblUM5tCn6PqEve2p",
-        state.dataDate
-    );
-
-const websiteExisting =
-    await checkExistingRecords(
-        "tblDAqCKi02acc2Nf",
-        state.dataDate
-    );
-
-const youtubeExisting =
-    await checkExistingRecords(
-        "tblpGZTVf3Z02YWc8",
-        state.dataDate
-    );
-    
     let html = "";
 
     html += `
@@ -232,11 +268,11 @@ const youtubeExisting =
 
         html += "<ul>";
 
-        matches.forEach(m=>{
+        matches.forEach(match => {
 
             html += `
                 <li>
-                    ${m.match_name}
+                    ${match.match_name}
                 </li>
             `;
 
@@ -247,7 +283,7 @@ const youtubeExisting =
     }else{
 
         html += `
-            No matches found
+            <p>No matches found</p>
         `;
 
     }
@@ -264,13 +300,9 @@ const youtubeExisting =
 
         html += `
             <p>
-                <b>${file.name}</b>
-                <br>
-                Rows:
-                ${rows.length}
-                <br>
-                Account:
-                ${detectAccount(file.name)}
+                <b>${file.name}</b><br>
+                Rows: ${rows.length}<br>
+                Account: ${detectAccount(file.name)}
             </p>
         `;
 
@@ -288,11 +320,9 @@ const youtubeExisting =
 
         html += `
             <p>
-                <b>${file.name}</b>
-                <br>
+                <b>${file.name}</b><br>
                 Category:
-                ${detectCategory(file.name)}
-                <br>
+                ${detectCategory(file.name)}<br>
                 Rows:
                 ${rows.length}
             </p>
@@ -312,8 +342,7 @@ const youtubeExisting =
 
         html += `
             <p>
-                <b>${file.name}</b>
-                <br>
+                <b>${file.name}</b><br>
                 Rows:
                 ${rows.length}
             </p>
@@ -333,8 +362,7 @@ const youtubeExisting =
 
         html += `
             <p>
-                <b>${file.name}</b>
-                <br>
+                <b>${file.name}</b><br>
                 Rows:
                 ${rows.length}
             </p>
@@ -343,55 +371,47 @@ const youtubeExisting =
     }
 
     html += `
-<hr>
-<h3>Validation</h3>
-`;
+        <hr>
+        <h3>Validation</h3>
+    `;
 
-if(
-    state.validation.ready
-){
+    if(state.validation.ready){
 
-    html += `
-        <p
-            style="
+        html += `
+            <p style="
                 color:#00ff88;
                 font-weight:bold;
-            "
-        >
-            READY
-        </p>
-    `;
+            ">
+                READY
+            </p>
+        `;
 
-}
-else{
+    }else{
 
-    html += `
-        <p
-            style="
+        html += `
+            <p style="
                 color:#ff4444;
                 font-weight:bold;
-            "
-        >
-            ERROR
-        </p>
-    `;
+            ">
+                ERROR
+            </p>
+        `;
 
-    html += "<ul>";
+        html += "<ul>";
 
-    state.validation.errors
-        .forEach(error=>{
+        state.validation.errors
+            .forEach(error => {
 
-            html += `
-                <li>
-                    ${error}
-                </li>
-            `;
+                html += `
+                    <li>${error}</li>
+                `;
 
-        });
+            });
 
-    html += "</ul>";
+        html += "</ul>";
 
-}
+    }
+
     previewContainer.innerHTML =
         html;
 
@@ -406,10 +426,7 @@ async function getMatches(date){
                 `/api/matches?date=${date}`
             );
 
-        const data =
-            await response.json();
-
-        return data;
+        return await response.json();
 
     }
     catch(error){
@@ -421,22 +438,6 @@ async function getMatches(date){
     }
 
 }
-
-async function checkExistingRecords(
-    tableId,
-    date
-){
-
-    const response =
-        await fetch(
-            `/api/check-records?table=${tableId}&date=${date}`
-        );
-
-    return await response.json();
-
-}
-
-loadUploadLog();
 
 async function parseCsv(file){
 
@@ -450,7 +451,9 @@ async function parseCsv(file){
 
             complete:(results)=>{
 
-                resolve(results.data);
+                resolve(
+                    results.data
+                );
 
             },
 
@@ -474,10 +477,10 @@ function detectCategory(fileName){
     if(name.includes("shows"))
         return "SHOWS";
 
-    if(name.includes("acción"))
+    if(name.includes("accion"))
         return "ACCION";
 
-    if(name.includes("accion"))
+    if(name.includes("acción"))
         return "ACCION";
 
     if(name.includes("aura"))
@@ -489,6 +492,9 @@ function detectCategory(fileName){
     if(name.includes("luzu"))
         return "LUZU";
 
+    if(name.includes("casadelkun"))
+        return "LA_CASA_DEL_KUN";
+
     if(name.includes("kun"))
         return "LA_CASA_DEL_KUN";
 
@@ -496,82 +502,14 @@ function detectCategory(fileName){
         return "CONTENIDO_ORIGINAL";
 
     if(name.includes("onlyphotos"))
-    return "ONLY_PHOTOS";
-
-    if(name.includes("casadelkun"))
-    return "LA_CASA_DEL_KUN";
+        return "ONLY_PHOTOS";
 
     return "UNKNOWN";
+
 }
 
 function detectAccount(fileName){
 
-    function resetValidation(){
-
-    state.validation.ready = true;
-
-    state.validation.errors = [];
-
-}
-
-function addValidationError(message){
-
-    state.validation.ready = false;
-
-    state.validation.errors.push(message);
-
-}
-    function validateCategories(){
-
-    for(const file of state.socialCategories){
-
-        const category =
-            detectCategory(file.name);
-
-        if(category === "UNKNOWN"){
-
-            addValidationError(
-                `Unknown category: ${file.name}`
-            );
-
-        }
-
-    }
-
-}
-    function validateRequiredFiles(){
-
-    if(
-        state.socialGeneral.length === 0
-    ){
-
-        addValidationError(
-            "Missing Social General file"
-        );
-
-    }
-
-    if(
-        state.website.length === 0
-    ){
-
-        addValidationError(
-            "Missing Website file"
-        );
-
-    }
-
-    if(
-        state.youtube.length === 0
-    ){
-
-        addValidationError(
-            "Missing YouTube files"
-        );
-
-    }
-
-}
     const name =
         fileName.toLowerCase();
 
@@ -582,8 +520,8 @@ function addValidationError(message){
         return "Only Photos";
 
     return fileName;
-}
 
+}
 
 async function loadUploadLog(){
 
@@ -606,12 +544,14 @@ async function loadUploadLog(){
 
 }
 
+loadUploadLog();
+
 uploadBtn.addEventListener(
     "click",
     () => {
 
         alert(
-            "Upload engine will be enabled in next version."
+            "Upload Engine Coming Soon"
         );
 
     }
