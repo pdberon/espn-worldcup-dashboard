@@ -594,18 +594,26 @@ console.log(
     categoriesResult
 );
 
-        alert(`
-Social
-
-Created:
-${socialResult?.created || 0}
-
-Updated:
-${socialResult?.updated || 0}
-
-Categories Files:
-${categoriesResult?.length || 0}
-`);
+           alert(`
+    SOCIAL GENERAL
+    
+    Created:
+    ${socialResult?.created || 0}
+    
+    Updated:
+    ${socialResult?.updated || 0}
+    
+    SOCIAL CATEGORIES
+    
+    Files:
+    ${categoriesResult?.filesProcessed || 0}
+    
+    Created:
+    ${categoriesResult?.created || 0}
+    
+    Updated:
+    ${categoriesResult?.updated || 0}
+    `);
 
     }
     catch(error){
@@ -677,14 +685,16 @@ ${categoriesResult?.length || 0}
     return await response.json();
 
 }
-            async function uploadSocialCategories(){
+           async function uploadSocialCategories(){
 
     const matches =
         await getMatches(
             state.dataDate
         );
 
-    const results = [];
+    let totalCreated = 0;
+    let totalUpdated = 0;
+    let filesProcessed = 0;
 
     for(const file of state.socialCategories){
 
@@ -732,10 +742,24 @@ ${categoriesResult?.length || 0}
         const result =
             await response.json();
 
-        results.push(result);
+        filesProcessed++;
+
+        totalCreated +=
+            result.created || 0;
+
+        totalUpdated +=
+            result.updated || 0;
 
     }
 
-    return results;
+    return {
+
+        filesProcessed,
+        created:
+            totalCreated,
+        updated:
+            totalUpdated
+
+    };
 
 }
