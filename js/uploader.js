@@ -176,26 +176,23 @@ function addValidationError(message){
 
 function validateRequiredFiles(){
 
-    if(state.socialGeneral.length === 0){
+    const hasSocial =
+        state.socialGeneral.length > 0;
+
+    const hasWebsite =
+        state.website.length > 0;
+
+    const hasYoutube =
+        state.youtube.length > 0;
+
+    if(
+        !hasSocial &&
+        !hasWebsite &&
+        !hasYoutube
+    ){
 
         addValidationError(
-            "Missing Social General file"
-        );
-
-    }
-
-    if(state.website.length === 0){
-
-        addValidationError(
-            "Missing Website file"
-        );
-
-    }
-
-    if(state.youtube.length === 0){
-
-        addValidationError(
-            "Missing YouTube files"
+            "No files selected"
         );
 
     }
@@ -551,12 +548,12 @@ uploadBtn.addEventListener(
     uploadData
 );
 
-   async function uploadData(){
+  async function uploadData(){
 
     if(!state.validation.ready){
 
         alert(
-            "Validation errors found."
+            state.validation.errors.join("\n")
         );
 
         return;
@@ -570,22 +567,28 @@ uploadBtn.addEventListener(
         uploadBtn.innerText =
             "Uploading...";
 
-        const socialResult =
-            await uploadSocialGeneral();
+        let result = null;
+
+        if(
+            state.socialGeneral.length > 0
+        ){
+
+            result =
+                await uploadSocialGeneral();
+
+        }
 
         console.log(
-            socialResult
+            result
         );
 
-        alert(`
-Upload Completed
-
-Created:
-${socialResult.created}
-
-Updated:
-${socialResult.updated}
-`);
+        alert(
+            JSON.stringify(
+                result,
+                null,
+                2
+            )
+        );
 
     }
     catch(error){
@@ -609,7 +612,7 @@ ${socialResult.updated}
 
 }
 
-    async function uploadSocialGeneral(){
+   async function uploadSocialGeneral(){
 
     const allRows = [];
 
@@ -618,7 +621,9 @@ ${socialResult.updated}
         const rows =
             await parseCsv(file);
 
-        allRows.push(...rows);
+        allRows.push(
+            ...rows
+        );
 
     }
 
