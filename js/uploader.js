@@ -550,3 +550,108 @@ uploadBtn.addEventListener(
     "click",
     uploadData
 );
+
+   async function uploadData(){
+
+    if(!state.validation.ready){
+
+        alert(
+            "Validation errors found."
+        );
+
+        return;
+
+    }
+
+    try{
+
+        uploadBtn.disabled = true;
+
+        uploadBtn.innerText =
+            "Uploading...";
+
+        const socialResult =
+            await uploadSocialGeneral();
+
+        console.log(
+            socialResult
+        );
+
+        alert(`
+Upload Completed
+
+Created:
+${socialResult.created}
+
+Updated:
+${socialResult.updated}
+`);
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        alert(
+            error.message
+        );
+
+    }
+    finally{
+
+        uploadBtn.disabled =
+            false;
+
+        uploadBtn.innerText =
+            "UPLOAD TO AIRTABLE";
+
+    }
+
+}
+
+    async function uploadSocialGeneral(){
+
+    const allRows = [];
+
+    for(const file of state.socialGeneral){
+
+        const rows =
+            await parseCsv(file);
+
+        allRows.push(...rows);
+
+    }
+
+    const matches =
+        await getMatches(
+            state.dataDate
+        );
+
+    const response =
+        await fetch(
+            "/api/upload-social",
+            {
+                method:"POST",
+
+                headers:{
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body:JSON.stringify({
+
+                    uploadDate:
+                        state.dataDate,
+
+                    matches,
+
+                    records:
+                        allRows
+
+                })
+            }
+        );
+
+    return await response.json();
+
+}
