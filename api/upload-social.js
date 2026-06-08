@@ -50,29 +50,21 @@ export default async function handler(req,res){
                     row["Media Type"],
 
                 posts:
-    parseNumber(
-        row["Volume of Published Messages (SUM)"]
-    ),
-
-video_views:
-    parseNumber(
-        row["Total Video Views Cross Platform - BI (SUM)"]
-    ),
-
-engagement:
-    parseNumber(
-        row["Total Engagements Cross-Platform - BI (SUM)"]
-    ),
-
+                    parseNumber(
+                        row["Volume of Published Messages (SUM)"]
+                    ),
+                
                 video_views:
-                    Number(
-                        row["Total Video Views Cross Platform - BI (SUM)"] || 0
+                    parseNumber(
+                        row["Total Video Views Cross Platform - BI (SUM)"]
+                    ),
+                
+                engagement:
+                    parseNumber(
+                        row["Total Engagements Cross-Platform - BI (SUM)"]
                     ),
 
-                engagement:
-                    Number(
-                        row["Total Engagements Cross-Platform - BI (SUM)"] || 0
-                    ),
+              
 
                 account_name:
                     row["Accounts"] ||
