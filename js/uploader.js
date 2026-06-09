@@ -923,6 +923,54 @@ ${websiteResult?.referralUpdated || 0}
 
         }
 
+       else if(
+    title.includes("REFFERAL STORY")
+){
+
+    const region =
+        title.replace(
+            "REFFERAL STORY",
+            ""
+        ).trim();
+
+    const values =
+        lines[i+6]
+        ?.trim()
+        ?.split(",");
+
+    if(values?.length >= 6){
+
+        records.push({
+
+            section:
+                "REFERRAL",
+
+            region,
+
+            referral_type:
+                "REFFERAL STORY",
+
+            ref_search:
+                Number(values[1]),
+
+            ref_direct:
+                Number(values[2]),
+
+            ref_social:
+                Number(values[3]),
+
+            ref_other:
+                Number(values[4]),
+
+            ref_internal:
+                Number(values[5])
+
+        });
+
+    }
+
+}
+
         else if(
 
     !title.includes("REFFERAL") &&
@@ -931,69 +979,7 @@ ${websiteResult?.referralUpdated || 0}
     !title.includes("DATE") &&
     !title.includes("EXPORT DATA")
 
-        ){
-
-            const region =
-                title.replace(
-                    "REFFERAL STORY",
-                    ""
-                ).trim();
-
-            const values =
-                lines[i+6]
-                ?.trim()
-                ?.split(",");
-
-            if(values?.length >= 6){
-
-                
-                
-console.log(
-    "WEBSITE REGION:",
-    title
-);
-
-
-                
-                records.push({
-
-                    section:
-                        "REFERRAL",
-
-                    region,
-
-                    referral_type:
-                        "REFFERAL STORY",
-
-                    ref_search:
-                        Number(values[1]),
-
-                    ref_direct:
-                        Number(values[2]),
-
-                    ref_social:
-                        Number(values[3]),
-
-                    ref_other:
-                        Number(values[4]),
-
-                    ref_internal:
-                        Number(values[5])
-
-                });
-
-            }
-
-        }
-
-        else if(
-
-            !title.includes("REFFERAL") &&
-            !title.includes("Report suite") &&
-            !title.includes("Segments") &&
-            !title.includes("Date")
-
-        ){
+){
 
             const values =
                 lines[i+12]
