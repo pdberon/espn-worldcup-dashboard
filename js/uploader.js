@@ -604,14 +604,16 @@ uploadBtn.addEventListener(
 
         }
 
-        if(
-            state.website.length > 0
-        ){
+      if(
+    state.website.length > 0
+){
 
-            websiteResult =
-                await uploadWebsite();
+    websiteResult =
+        await uploadWebsite();
 
-            if(
+}
+
+if(
     state.youtube.length > 0
 ){
 
@@ -619,8 +621,6 @@ uploadBtn.addEventListener(
         await uploadYoutube();
 
 }
-            
-        }
 
         alert(`
 SOCIAL GENERAL
