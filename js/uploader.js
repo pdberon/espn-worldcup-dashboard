@@ -1025,3 +1025,120 @@ ${websiteResult?.referralUpdated || 0}
     return records;
 
 }
+
+        async function uploadYoutube(){
+
+    const matches =
+        await getMatches(
+            state.dataDate
+        );
+
+    const metrics = {
+
+        videoViewsTotal:0,
+        watchTimeTotal:0,
+        liveVideoViews:0,
+        liveWatchTime:0
+
+    };
+
+    for(const file of state.youtube){
+
+        const rows =
+            await parseCsv(file);
+
+        if(!rows.length){
+            continue;
+        }
+
+        const firstRow =
+            rows[0];
+
+        const name =
+            file.name.toLowerCase();
+
+        if(
+            name.includes("views") &&
+            !name.includes("live")
+        ){
+
+            metrics.videoViewsTotal =
+                Number(
+                    Object.values(
+                        firstRow
+                    )[1]
+                );
+
+        }
+
+        if(
+            name.includes("watch") &&
+            !name.includes("live")
+        ){
+
+            metrics.watchTimeTotal =
+                Number(
+                    Object.values(
+                        firstRow
+                    )[1]
+                );
+
+        }
+
+        if(
+            name.includes("live") &&
+            name.includes("views")
+        ){
+
+            metrics.liveVideoViews =
+                Number(
+                    Object.values(
+                        firstRow
+                    )[1]
+                );
+
+        }
+
+        if(
+            name.includes("live") &&
+            name.includes("watch")
+        ){
+
+            metrics.liveWatchTime =
+                Number(
+                    Object.values(
+                        firstRow
+                    )[1]
+                );
+
+        }
+
+    }
+
+    const response =
+        await fetch(
+            "/api/upload-youtube",
+            {
+                method:"POST",
+
+                headers:{
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body:JSON.stringify({
+
+                    uploadDate:
+                        state.dataDate,
+
+                    matches,
+
+                    metrics
+
+                })
+            }
+        );
+
+    return await response.json();
+
+}
