@@ -924,7 +924,13 @@ ${websiteResult?.referralUpdated || 0}
         }
 
         else if(
-            title.includes("REFFERAL STORY")
+
+    !title.includes("REFFERAL") &&
+    !title.includes("REPORT SUITE") &&
+    !title.includes("SEGMENTS") &&
+    !title.includes("DATE") &&
+    !title.includes("EXPORT DATA")
+
         ){
 
             const region =
@@ -940,6 +946,15 @@ ${websiteResult?.referralUpdated || 0}
 
             if(values?.length >= 6){
 
+                
+                
+console.log(
+    "WEBSITE REGION:",
+    title
+);
+
+
+                
                 records.push({
 
                     section:
