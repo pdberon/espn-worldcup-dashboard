@@ -28,29 +28,40 @@ export default async function handler(req, res) {
     })
     .all(),
 
-            base(TABLES.socialCategories)
-                .select({
-                    filterByFormula: `{fecha}='${date}'`
-                })
-                .all(),
+             base(TABLES.social)
+        .select({
+            filterByFormula:
+                `DATETIME_FORMAT({fecha}, 'YYYY-MM-DD')='${date}'`
+        })
+        .all(),
 
-            base(TABLES.website)
-                .select({
-                    filterByFormula: `{fecha}='${date}'`
-                })
-                .all(),
+    base(TABLES.socialCategories)
+        .select({
+            filterByFormula:
+                `DATETIME_FORMAT({fecha}, 'YYYY-MM-DD')='${date}'`
+        })
+        .all(),
 
-            base(TABLES.websiteRef)
-                .select({
-                    filterByFormula: `{fecha}='${date}'`
-                })
-                .all(),
+    base(TABLES.website)
+        .select({
+            filterByFormula:
+                `DATETIME_FORMAT({fecha}, 'YYYY-MM-DD')='${date}'`
+        })
+        .all(),
 
-            base(TABLES.youtube)
-                .select({
-                    filterByFormula: `{fecha}='${date}'`
-                })
-                .all()
+    base(TABLES.websiteRef)
+        .select({
+            filterByFormula:
+                `DATETIME_FORMAT({fecha}, 'YYYY-MM-DD')='${date}'`
+        })
+        .all(),
+
+    base(TABLES.youtube)
+        .select({
+            filterByFormula:
+                `DATETIME_FORMAT({fecha}, 'YYYY-MM-DD')='${date}'`
+        })
+        .all()
 
         ]);
 
@@ -278,6 +289,20 @@ export default async function handler(req, res) {
             ? youtube[0].fields
             : {};
 
+        console.log({
+
+    social: social.length,
+
+    categories: categories.length,
+
+    website: website.length,
+
+    websiteRef: websiteRef.length,
+
+    youtube: youtube.length
+
+});
+            
         return res.status(200).json({
 
             kpis,
