@@ -838,3 +838,173 @@ console.log(
     return await response.json();
 
 }
+
+        async function parseWebsiteAdobe(file){
+
+    const text =
+        await file.text();
+
+    const lines =
+        text.split("\n");
+
+    const records = [];
+
+    for(let i=0;i<lines.length;i++){
+
+        const line =
+            lines[i].trim();
+
+        if(
+            !line.startsWith("# ")
+        ){
+            continue;
+        }
+
+        const title =
+            line
+                .replace("# ","")
+                .trim();
+
+        if(
+            title.includes("REFFERAL VIDEO")
+        ){
+
+            const region =
+                title.replace(
+                    "REFFERAL VIDEO",
+                    ""
+                ).trim();
+
+            const values =
+                lines[i+5]
+                ?.trim()
+                ?.split(",");
+
+            if(values?.length >= 6){
+
+                records.push({
+
+                    section:
+                        "REFERRAL",
+
+                    region,
+
+                    referral_type:
+                        "REFFERAL VIDEO",
+
+                    ref_search:
+                        Number(values[1]),
+
+                    ref_direct:
+                        Number(values[2]),
+
+                    ref_social:
+                        Number(values[3]),
+
+                    ref_other:
+                        Number(values[4]),
+
+                    ref_internal:
+                        Number(values[5])
+
+                });
+
+            }
+
+        }
+
+        else if(
+            title.includes("REFFERAL STORY")
+        ){
+
+            const region =
+                title.replace(
+                    "REFFERAL STORY",
+                    ""
+                ).trim();
+
+            const values =
+                lines[i+6]
+                ?.trim()
+                ?.split(",");
+
+            if(values?.length >= 6){
+
+                records.push({
+
+                    section:
+                        "REFERRAL",
+
+                    region,
+
+                    referral_type:
+                        "REFFERAL STORY",
+
+                    ref_search:
+                        Number(values[1]),
+
+                    ref_direct:
+                        Number(values[2]),
+
+                    ref_social:
+                        Number(values[3]),
+
+                    ref_other:
+                        Number(values[4]),
+
+                    ref_internal:
+                        Number(values[5])
+
+                });
+
+            }
+
+        }
+
+        else if(
+
+            !title.includes("REFFERAL") &&
+            !title.includes("Report suite") &&
+            !title.includes("Segments") &&
+            !title.includes("Date")
+
+        ){
+
+            const values =
+                lines[i+12]
+                ?.trim()
+                ?.split(",");
+
+            if(values?.length >= 5){
+
+                records.push({
+
+                    section:
+                        "WEBSITE",
+
+                    region:
+                        title,
+
+                    page_views:
+                        Number(values[1]),
+
+                    page_views_dstory:
+                        Number(values[2]),
+
+                    video_starts:
+                        Number(values[3]),
+
+                    unique_visitors:
+                        Number(values[4])
+
+                });
+
+            }
+
+        }
+
+    }
+
+    return records;
+
+}
