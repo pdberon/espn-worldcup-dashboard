@@ -569,6 +569,7 @@ uploadBtn.addEventListener(
 
         let socialResult = null;
         let categoriesResult = null;
+        let websiteResult = null;
 
         if(
             state.socialGeneral.length > 0
@@ -582,6 +583,15 @@ uploadBtn.addEventListener(
 
     categoriesResult =
         await uploadSocialCategories();
+ 
+            if(
+    state.website.length > 0
+){
+
+    websiteResult =
+        await uploadWebsite();
+
+}
 
 }
         }
@@ -613,6 +623,22 @@ console.log(
     
     Updated:
     ${categoriesResult?.updated || 0}
+    
+    WEBSITE
+    
+    Created:
+    ${websiteResult?.websiteCreated || 0}
+    
+    Updated:
+    ${websiteResult?.websiteUpdated || 0}
+    
+    REFERRALS
+    
+    Created:
+    ${websiteResult?.referralCreated || 0}
+    
+    Updated:
+    ${websiteResult?.referralUpdated || 0}
     `);
 
     }
@@ -761,5 +787,54 @@ console.log(
             totalUpdated
 
     };
+
+}
+
+    async function uploadWebsite(){
+
+    const matches =
+        await getMatches(
+            state.dataDate
+        );
+
+    const allRows = [];
+
+    for(const file of state.website){
+
+        const rows =
+            await parseCsv(file);
+
+        allRows.push(
+            ...rows
+        );
+
+    }
+
+    const response =
+        await fetch(
+            "/api/upload-website",
+            {
+                method:"POST",
+
+                headers:{
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body:JSON.stringify({
+
+                    uploadDate:
+                        state.dataDate,
+
+                    matches,
+
+                    records:
+                        allRows
+
+                })
+            }
+        );
+
+    return await response.json();
 
 }
