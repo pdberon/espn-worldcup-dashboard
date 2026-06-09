@@ -849,7 +849,7 @@ ${websiteResult?.referralUpdated || 0}
 
 }
 
-        async function parseWebsiteAdobe(file){
+       async function parseWebsiteAdobe(file){
 
     const text =
         await file.text();
@@ -873,7 +873,10 @@ ${websiteResult?.referralUpdated || 0}
         const title =
             line
                 .replace("# ","")
-                .trim();
+                .trim()
+                .toUpperCase();
+
+        // REFFERAL VIDEO
 
         if(
             title.includes("REFFERAL VIDEO")
@@ -894,8 +897,7 @@ ${websiteResult?.referralUpdated || 0}
 
                 records.push({
 
-                    section:
-                        "REFERRAL",
+                    section:"REFERRAL",
 
                     region,
 
@@ -921,96 +923,100 @@ ${websiteResult?.referralUpdated || 0}
 
             }
 
+            continue;
+
         }
 
-       else if(
-    title.includes("REFFERAL STORY")
-){
+        // REFFERAL STORY
 
-    const region =
-        title.replace(
-            "REFFERAL STORY",
-            ""
-        ).trim();
+        if(
+            title.includes("REFFERAL STORY")
+        ){
 
-    const values =
-        lines[i+6]
-        ?.trim()
-        ?.split(",");
-
-    if(values?.length >= 6){
-
-        records.push({
-
-            section:
-                "REFERRAL",
-
-            region,
-
-            referral_type:
-                "REFFERAL STORY",
-
-            ref_search:
-                Number(values[1]),
-
-            ref_direct:
-                Number(values[2]),
-
-            ref_social:
-                Number(values[3]),
-
-            ref_other:
-                Number(values[4]),
-
-            ref_internal:
-                Number(values[5])
-
-        });
-
-    }
-
-}
-
-        else if(
-
-    !title.includes("REFFERAL") &&
-    !title.includes("REPORT SUITE") &&
-    !title.includes("SEGMENTS") &&
-    !title.includes("DATE") &&
-    !title.includes("EXPORT DATA")
-
-){
+            const region =
+                title.replace(
+                    "REFFERAL STORY",
+                    ""
+                ).trim();
 
             const values =
-                lines[i+12]
+                lines[i+6]
                 ?.trim()
                 ?.split(",");
 
-            if(values?.length >= 5){
+            if(values?.length >= 6){
 
                 records.push({
 
-                    section:
-                        "WEBSITE",
+                    section:"REFERRAL",
 
-                    region:
-                        title,
+                    region,
 
-                    page_views:
+                    referral_type:
+                        "REFFERAL STORY",
+
+                    ref_search:
                         Number(values[1]),
 
-                    page_views_dstory:
+                    ref_direct:
                         Number(values[2]),
 
-                    video_starts:
+                    ref_social:
                         Number(values[3]),
 
-                    unique_visitors:
-                        Number(values[4])
+                    ref_other:
+                        Number(values[4]),
+
+                    ref_internal:
+                        Number(values[5])
 
                 });
 
             }
+
+            continue;
+
+        }
+
+        // IGNORAR CABECERAS
+
+        if(
+            title.includes("REPORT SUITE") ||
+            title.includes("SEGMENTS") ||
+            title.includes("DATE") ||
+            title.includes("EXPORT DATA")
+        ){
+            continue;
+        }
+
+        // WEBSITE
+
+        const values =
+            lines[i+12]
+            ?.trim()
+            ?.split(",");
+
+        if(values?.length >= 5){
+
+            records.push({
+
+                section:"WEBSITE",
+
+                region:title,
+
+                page_views:
+                    Number(values[1]),
+
+                page_views_dstory:
+                    Number(values[2]),
+
+                video_starts:
+                    Number(values[3]),
+
+                unique_visitors:
+                    Number(values[4])
+
+            });
 
         }
 
