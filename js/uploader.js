@@ -332,20 +332,34 @@ async function generatePreview(){
         <h3>Website</h3>
     `;
 
-    for(const file of state.website){
+   for(const file of state.website){
 
-        const rows =
-            await parseCsv(file);
+    const rows =
+        await parseWebsiteAdobe(
+            file
+        );
 
-        html += `
-            <p>
-                <b>${file.name}</b><br>
-                Rows:
-                ${rows.length}
-            </p>
-        `;
+    const websiteRows =
+        rows.filter(
+            r => r.section === "WEBSITE"
+        );
 
-    }
+    const referralRows =
+        rows.filter(
+            r => r.section === "REFERRAL"
+        );
+
+    html += `
+        <p>
+            <b>${file.name}</b><br>
+            Regions:
+            ${websiteRows.length}<br>
+            Referrals:
+            ${referralRows.length}
+        </p>
+    `;
+
+}
 
     html += `
         <hr>
@@ -548,7 +562,7 @@ uploadBtn.addEventListener(
     uploadData
 );
 
-  async function uploadData(){
+ async function uploadData(){
 
     if(!state.validation.ready){
 
@@ -575,71 +589,65 @@ uploadBtn.addEventListener(
             state.socialGeneral.length > 0
         ){
 
-        socialResult =
-            await uploadSocialGeneral();
-        if(
-    state.socialCategories.length > 0
-){
+            socialResult =
+                await uploadSocialGeneral();
 
-    categoriesResult =
-        await uploadSocialCategories();
- 
-            if(
-    state.website.length > 0
-){
-
-    websiteResult =
-        await uploadWebsite();
-
-}
-
-}
         }
 
-        console.log(
-    socialResult
-);
+        if(
+            state.socialCategories.length > 0
+        ){
 
-console.log(
-    categoriesResult
-);
+            categoriesResult =
+                await uploadSocialCategories();
 
-           alert(`
-    SOCIAL GENERAL
-    
-    Created:
-    ${socialResult?.created || 0}
-    
-    Updated:
-    ${socialResult?.updated || 0}
-    
-    SOCIAL CATEGORIES
-    
-    Files:
-    ${categoriesResult?.filesProcessed || 0}
-    
-    Created:
-    ${categoriesResult?.created || 0}
-    
-    Updated:
-    ${categoriesResult?.updated || 0}
-    
-    WEBSITE
-    
-    Created:
-    ${websiteResult?.websiteCreated || 0}
-    
-    Updated:
-    ${websiteResult?.websiteUpdated || 0}
-    
-    REFERRALS
-    
-    Created:
-    ${websiteResult?.referralCreated || 0}
-    
-    Updated:
-    ${websiteResult?.referralUpdated || 0}
-    `);
+        }
+
+        if(
+            state.website.length > 0
+        ){
+
+            websiteResult =
+                await uploadWebsite();
+
+        }
+
+        alert(`
+SOCIAL GENERAL
+
+Created:
+${socialResult?.created || 0}
+
+Updated:
+${socialResult?.updated || 0}
+
+SOCIAL CATEGORIES
+
+Files:
+${categoriesResult?.filesProcessed || 0}
+
+Created:
+${categoriesResult?.created || 0}
+
+Updated:
+${categoriesResult?.updated || 0}
+
+WEBSITE
+
+Created:
+${websiteResult?.websiteCreated || 0}
+
+Updated:
+${websiteResult?.websiteUpdated || 0}
+
+REFERRALS
+
+Created:
+${websiteResult?.referralCreated || 0}
+
+Updated:
+${websiteResult?.referralUpdated || 0}
+`);
 
     }
     catch(error){
