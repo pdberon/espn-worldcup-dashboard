@@ -1,1 +1,330 @@
+import base, { TABLES } from "../lib/airtable.js";
 
+export default async function handler(req, res) {
+
+    try {
+
+        const date = req.query.date;
+
+        if (!date) {
+
+            return res.status(400).json({
+                error: "date parameter required"
+            });
+
+        }
+
+        const [
+            social,
+            categories,
+            website,
+            websiteRef,
+            youtube
+        ] = await Promise.all([
+
+            base(TABLES.social)
+                .select({
+                    filterByFormula: `{fecha}='${date}'`
+                })
+                .all(),
+
+            base(TABLES.socialCategories)
+                .select({
+                    filterByFormula: `{fecha}='${date}'`
+                })
+                .all(),
+
+            base(TABLES.website)
+                .select({
+                    filterByFormula: `{fecha}='${date}'`
+                })
+                .all(),
+
+            base(TABLES.websiteRef)
+                .select({
+                    filterByFormula: `{fecha}='${date}'`
+                })
+                .all(),
+
+            base(TABLES.youtube)
+                .select({
+                    filterByFormula: `{fecha}='${date}'`
+                })
+                .all()
+
+        ]);
+
+        const kpis = {
+
+            engagement:
+                social.reduce(
+                    (s, r) => s + (r.fields.engagement || 0),
+                    0
+                ),
+
+            posts:
+                social.reduce(
+                    (s, r) => s + (r.fields.posts || 0),
+                    0
+                ),
+
+            socialVideoViews:
+                social.reduce(
+                    (s, r) => s + (r.fields.video_views || 0),
+                    0
+                ),
+
+            pageViews:
+                website.reduce(
+                    (s, r) => s + (r.fields.page_views || 0),
+                    0
+                ),
+
+            contentStarts:
+                website.reduce(
+                    (s, r) => s + (r.fields.video_starts || 0),
+                    0
+                ),
+
+            uniqueVisitors:
+                website.reduce(
+                    (s, r) => s + (r.fields.unique_visitors || 0),
+                    0
+                ),
+
+            avgUniqueVisitors:
+                website.length
+                    ? Math.round(
+                        website.reduce(
+                            (s, r) =>
+                                s + (r.fields.unique_visitors || 0),
+                            0
+                        ) / website.length
+                    )
+                    : 0,
+
+            youtubeViews:
+                youtube.reduce(
+                    (s, r) =>
+                        s + (r.fields.video_views_total || 0),
+                    0
+                ),
+
+            youtubeWatchTime:
+                youtube.reduce(
+                    (s, r) =>
+                        s + (r.fields.watch_time_hours_total || 0),
+                    0
+                ),
+
+            liveViews:
+                youtube.reduce(
+                    (s, r) =>
+                        s + (r.fields.live_video_views || 0),
+                    0
+                )
+
+        };
+
+        const socialBreakdownMap = {};
+
+        social.forEach(row => {
+
+            const network =
+                row.fields.network || "Unknown";
+
+            if (!socialBreakdownMap[network]) {
+
+                socialBreakdownMap[network] = {
+                    network,
+                    posts: 0,
+                    videoViews: 0,
+                    engagement: 0
+                };
+
+            }
+
+            socialBreakdownMap[network].posts +=
+                row.fields.posts || 0;
+
+            socialBreakdownMap[network].videoViews +=
+                row.fields.video_views || 0;
+
+            socialBreakdownMap[network].engagement +=
+                row.fields.engagement || 0;
+
+        });
+
+        const contentBreakdownMap = {};
+
+        categories.forEach(row => {
+
+            const category =
+                row.fields.content_category || "Unknown";
+
+            if (!contentBreakdownMap[category]) {
+
+                contentBreakdownMap[category] = {
+                    category,
+                    posts: 0,
+                    videoViews: 0,
+                    engagement: 0
+                };
+
+            }
+
+            contentBreakdownMap[category].posts +=
+                row.fields.posts || 0;
+
+            contentBreakdownMap[category].videoViews +=
+                row.fields.video_views || 0;
+
+            contentBreakdownMap[category].engagement +=
+                row.fields.engagement || 0;
+
+        });
+
+        const websiteBreakdown = website.map(row => ({
+
+            region:
+                row.fields.region,
+
+            pageViews:
+                row.fields.page_views || 0,
+
+            contentStarts:
+                row.fields.video_starts || 0,
+
+            uniqueVisitors:
+                row.fields.unique_visitors || 0
+
+        }));
+
+        const referralTotals = {
+
+            SEARCH: {
+                video: 0,
+                story: 0
+            },
+
+            DIRECT: {
+                video: 0,
+                story: 0
+            },
+
+            SOCIAL: {
+                video: 0,
+                story: 0
+            },
+
+            OTHER: {
+                video: 0,
+                story: 0
+            },
+
+            INTERNAL: {
+                video: 0,
+                story: 0
+            }
+
+        };
+
+        websiteRef.forEach(row => {
+
+            const type =
+                row.fields.referral_type;
+
+            const bucket =
+                type === "REFFERAL VIDEO"
+                    ? "video"
+                    : "story";
+
+            referralTotals.SEARCH[bucket] +=
+                row.fields.ref_search || 0;
+
+            referralTotals.DIRECT[bucket] +=
+                row.fields.ref_direct || 0;
+
+            referralTotals.SOCIAL[bucket] +=
+                row.fields.ref_social || 0;
+
+            referralTotals.OTHER[bucket] +=
+                row.fields.ref_other || 0;
+
+            referralTotals.INTERNAL[bucket] +=
+                row.fields.ref_internal || 0;
+
+        });
+
+        const referralBreakdown =
+            Object.keys(referralTotals)
+                .map(source => ({
+
+                    source,
+
+                    video:
+                        referralTotals[source].video,
+
+                    story:
+                        referralTotals[source].story,
+
+                    total:
+                        referralTotals[source].video +
+                        referralTotals[source].story
+
+                }));
+
+        const youtubeSummary = youtube.length
+            ? youtube[0].fields
+            : {};
+
+        return res.status(200).json({
+
+            kpis,
+
+            socialBreakdown:
+                Object.values(
+                    socialBreakdownMap
+                ),
+
+            contentBreakdown:
+                Object.values(
+                    contentBreakdownMap
+                ),
+
+            websiteBreakdown,
+
+            referralBreakdown,
+
+            youtube: {
+
+                videoViews:
+                    youtubeSummary.video_views_total || 0,
+
+                watchTime:
+                    youtubeSummary.watch_time_hours_total || 0,
+
+                liveViews:
+                    youtubeSummary.live_video_views || 0,
+
+                liveWatchTime:
+                    youtubeSummary.live_watch_time_hours || 0
+
+            }
+
+        });
+
+    }
+    catch (error) {
+
+        console.error(error);
+
+        return res.status(500).json({
+
+            error: error.message
+
+        });
+
+    }
+
+}
