@@ -23,10 +23,10 @@ export default async function handler(req, res) {
         ] = await Promise.all([
 
             base(TABLES.social)
-                .select({
-                    filterByFormula: `{fecha}='${date}'`
-                })
-                .all(),
+    .select({
+        maxRecords: 5
+    })
+    .all(),
 
             base(TABLES.socialCategories)
                 .select({
