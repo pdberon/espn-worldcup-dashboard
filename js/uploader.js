@@ -584,6 +584,7 @@ uploadBtn.addEventListener(
         let socialResult = null;
         let categoriesResult = null;
         let websiteResult = null;
+        let youtubeResult = null;   
 
         if(
             state.socialGeneral.length > 0
@@ -610,6 +611,15 @@ uploadBtn.addEventListener(
             websiteResult =
                 await uploadWebsite();
 
+            if(
+    state.youtube.length > 0
+){
+
+    youtubeResult =
+        await uploadYoutube();
+
+}
+            
         }
 
         alert(`
@@ -631,6 +641,14 @@ ${categoriesResult?.created || 0}
 
 Updated:
 ${categoriesResult?.updated || 0}
+
+YOUTUBE
+
+Created:
+${youtubeResult?.created || 0}
+
+Updated:
+${youtubeResult?.updated || 0}
 
 WEBSITE
 
