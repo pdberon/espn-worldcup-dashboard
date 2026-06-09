@@ -60,6 +60,14 @@ export default async function handler(req,res){
                     region:
                         row.region,
 
+                    region_type:
+                    (
+                        row.region === "LATAM" ||
+                        row.region === "SOUTH"
+                    )
+                        ? "REGION"
+                        : "PAIS",
+
                     page_views:
                         row.page_views,
 
@@ -133,7 +141,15 @@ export default async function handler(req,res){
 
                     region:
                         row.region,
-
+                    
+                    region_type:
+                    (
+                        row.region === "LATAM" ||
+                        row.region === "SOUTH"
+                    )
+                        ? "REGION"
+                        : "PAIS",
+                    
                     referral_type:
                         row.referral_type,
 
