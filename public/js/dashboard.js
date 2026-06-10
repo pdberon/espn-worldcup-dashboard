@@ -228,6 +228,7 @@ function renderWebsite(rows){
             <tr>
                 <td>${row.region}</td>
                 <td>${formatNumber(row.pageViews)}</td>
+                <td>${formatNumber(row.pageViewsDstory)}</td>
                 <td>${formatNumber(row.contentStarts)}</td>
                 <td>${formatNumber(row.uniqueVisitors)}</td>
             </tr>
