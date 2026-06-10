@@ -408,6 +408,12 @@ document
 .getElementById("exportImageBtn")
 ?.addEventListener("click", async () => {
 
+    const controls =
+    document.querySelector('.date-range-container');
+
+controls.style.display = 'none';
+
+    
     const dashboard =
     document.getElementById('export-container');
 
@@ -420,6 +426,7 @@ const canvas =
         scrollY: -window.scrollY,
         windowWidth: dashboard.scrollWidth,
         windowHeight: dashboard.scrollHeight
+    
     });
 
     const link =
@@ -432,7 +439,7 @@ const canvas =
         canvas.toDataURL("image/png");
 
     link.click();
-
+controls.style.display = '';
 });
 
 
