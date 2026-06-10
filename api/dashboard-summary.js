@@ -154,8 +154,26 @@ export default async function handler(req,res){
             )[0];
 
         const latestDate =
-            latestYoutube?.fields
-            ?.fecha;
+            latestYoutube?.fields?.fecha;
+
+        const allDates = [
+
+            ...social.map(
+                r => r.fields.fecha
+            ),
+        
+            ...website.map(
+                r => r.fields.fecha
+            ),
+        
+            ...youtube.map(
+                r => r.fields.fecha
+            )
+        
+        ].filter(Boolean);
+        
+        const firstDate =
+            [...allDates].sort()[0];
 
         const todayMatches =
             matches
@@ -171,6 +189,7 @@ export default async function handler(req,res){
 
         res.status(200).json({
 
+            firstDate,
             latestDate,
 
             tournamentDay:
