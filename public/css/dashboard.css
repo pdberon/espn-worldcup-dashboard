@@ -431,3 +431,22 @@ td:not(:first-child){
         0 6px 16px rgba(22,163,74,.45);
 
 }
+
+
+.date-input{
+
+    background:#111;
+
+    color:white;
+
+    border:1px solid #c8a45a;
+
+    border-radius:8px;
+
+    padding:10px 14px;
+
+    font-size:14px;
+
+    min-width:170px;
+
+}
