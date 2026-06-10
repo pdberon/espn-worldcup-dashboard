@@ -396,3 +396,38 @@ td:not(:first-child){
     cursor:pointer;
     font-weight:bold;
 }
+
+
+.export-btn{
+
+    background:#16a34a;
+
+    color:white;
+
+    border:none;
+
+    padding:10px 20px;
+
+    border-radius:8px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:all .2s ease;
+
+    box-shadow:
+        0 4px 12px rgba(22,163,74,.35);
+
+}
+
+.export-btn:hover{
+
+    background:#22c55e;
+
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 6px 16px rgba(22,163,74,.45);
+
+}
