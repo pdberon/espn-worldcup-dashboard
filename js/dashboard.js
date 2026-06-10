@@ -1,42 +1,313 @@
-function ordinal(n) {
+document.addEventListener(
+    "DOMContentLoaded",
+    initDashboard
+);
 
-    const s = ["th", "st", "nd", "rd"];
-    const v = n % 100;
+async function initDashboard(){
 
-    return (
-        n +
-        (
-            s[(v - 20) % 10] ||
-            s[v] ||
-            s[0]
-        )
-    );
+    await loadDates();
 
 }
 
-function formatSourceDate(dateStr) {
+async function loadDates(){
 
-    const d = new Date(dateStr);
+    try{
 
-    const months = [
-        "Jan.",
-        "Feb.",
-        "Mar.",
-        "Apr.",
-        "May.",
-        "Jun.",
-        "Jul.",
-        "Aug.",
-        "Sep.",
-        "Oct.",
-        "Nov.",
-        "Dec."
-    ];
+        const response =
+            await fetch(
+                "/api/dashboard-summary"
+            );
 
-    return `${months[d.getMonth()]} ${ordinal(d.getDate())}`;
+        const summary =
+            await response.json();
+
+        const select =
+            document.getElementById(
+                "dateFilter"
+            );
+
+        select.innerHTML = `
+            <option value="${summary.latestDate}">
+                ${summary.latestDate}
+            </option>
+        `;
+
+        select.addEventListener(
+            "change",
+            () => {
+
+                loadDashboard(
+                    select.value
+                );
+
+            }
+        );
+
+        await loadDashboard(
+            summary.latestDate
+        );
+
+    }
+    catch(error){
+
+        console.error(error);
+
+    }
 
 }
 
-const sourceText =
+async function loadDashboard(date){
 
-`Sources: Sprinklr Data, YouTube Studio & Adobe Analytics, ${formatSourceDate(firstDate)} to ${formatSourceDate(lastDate)}, All South Accounts`;
+    try{
+
+        const response =
+            await fetch(
+                `/api/dashboard-data?date=${date}`
+            );
+
+        const data =
+            await response.json();
+
+        renderKpis(
+            data.kpis
+        );
+
+        renderSocial(
+            data.socialBreakdown
+        );
+
+        renderContent(
+            data.contentBreakdown
+        );
+
+        renderWebsite(
+            data.websiteBreakdown
+        );
+
+        renderReferrals(
+            data.referralBreakdown
+        );
+
+        renderYoutube(
+            data.youtube
+        );
+
+        renderSources();
+
+    }
+    catch(error){
+
+        console.error(error);
+
+    }
+
+}
+
+function renderKpis(kpis){
+
+    document.getElementById(
+        "kpiEngagement"
+    ).innerText =
+        formatNumber(
+            kpis.engagement
+        );
+
+    document.getElementById(
+        "kpiPosts"
+    ).innerText =
+        formatNumber(
+            kpis.posts
+        );
+
+    document.getElementById(
+        "kpiVideoViews"
+    ).innerText =
+        formatNumber(
+            kpis.socialVideoViews
+        );
+
+    document.getElementById(
+        "kpiPageViews"
+    ).innerText =
+        formatNumber(
+            kpis.pageViews
+        );
+
+    document.getElementById(
+        "kpiContentStarts"
+    ).innerText =
+        formatNumber(
+            kpis.contentStarts
+        );
+
+    document.getElementById(
+        "kpiUniqueVisitors"
+    ).innerText =
+        formatNumber(
+            kpis.avgUniqueVisitors
+        );
+
+}
+
+function renderSocial(rows){
+
+    const table =
+        document.getElementById(
+            "socialTable"
+        );
+
+    table.innerHTML = "";
+
+    rows.forEach(row => {
+
+        table.innerHTML += `
+            <tr>
+                <td>${row.network}</td>
+                <td>${formatNumber(row.posts)}</td>
+                <td>${formatNumber(row.videoViews)}</td>
+                <td>${formatNumber(row.engagement)}</td>
+            </tr>
+        `;
+
+    });
+
+}
+
+function renderContent(rows){
+
+    const table =
+        document.getElementById(
+            "contentTable"
+        );
+
+    table.innerHTML = "";
+
+    rows.forEach(row => {
+
+        table.innerHTML += `
+            <tr>
+                <td>${row.category}</td>
+                <td>${formatNumber(row.posts)}</td>
+                <td>${formatNumber(row.videoViews)}</td>
+                <td>${formatNumber(row.engagement)}</td>
+            </tr>
+        `;
+
+    });
+
+}
+
+function renderWebsite(rows){
+
+    const table =
+        document.getElementById(
+            "websiteTable"
+        );
+
+    table.innerHTML = "";
+
+    rows.forEach(row => {
+
+        table.innerHTML += `
+            <tr>
+                <td>${row.region}</td>
+                <td>${formatNumber(row.pageViews)}</td>
+                <td>${formatNumber(row.contentStarts)}</td>
+                <td>${formatNumber(row.uniqueVisitors)}</td>
+            </tr>
+        `;
+
+    });
+
+}
+
+function renderReferrals(rows){
+
+    const table =
+        document.getElementById(
+            "referralTable"
+        );
+
+    table.innerHTML = "";
+
+    rows.forEach(row => {
+
+        table.innerHTML += `
+            <tr>
+                <td>${row.source}</td>
+                <td>${formatNumber(row.video)}</td>
+                <td>${formatNumber(row.story)}</td>
+                <td>${formatNumber(row.total)}</td>
+            </tr>
+        `;
+
+    });
+
+}
+
+function renderYoutube(data){
+
+    document.getElementById(
+        "ytViews"
+    ).innerText =
+        formatNumber(
+            data.videoViews
+        );
+
+    document.getElementById(
+        "ytWatchTime"
+    ).innerText =
+        formatNumber(
+            Math.round(
+                data.watchTime
+            )
+        );
+
+    document.getElementById(
+        "ytLiveViews"
+    ).innerText =
+        formatNumber(
+            data.liveViews
+        );
+
+    document.getElementById(
+        "ytLiveWatchTime"
+    ).innerText =
+        formatNumber(
+            Math.round(
+                data.liveWatchTime
+            )
+        );
+
+}
+
+function renderSources(){
+
+    document.getElementById(
+        "sourcesText"
+    ).innerText =
+        "Sources: Sprinklr Data, YouTube Studio & Adobe Analytics, Jun. 1st to Jul. 8th, All South Accounts";
+
+}
+
+function formatNumber(value){
+
+    if(value >= 1000000){
+
+        return (
+            value / 1000000
+        ).toFixed(1) + "M";
+
+    }
+
+    if(value >= 1000){
+
+        return (
+            value / 1000
+        ).toFixed(1) + "K";
+
+    }
+
+    return value;
+
+}
