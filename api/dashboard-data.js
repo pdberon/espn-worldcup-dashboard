@@ -127,6 +127,30 @@ export default async function handler(req, res) {
                     (s, r) =>
                         s + (r.fields.live_video_views || 0),
                     0
+                ),
+            
+            totalVideoViews:
+            
+                social.reduce(
+                    (s, r) =>
+                        s + (r.fields.video_views || 0),
+                    0
+                )
+            
+                +
+            
+                website.reduce(
+                    (s, r) =>
+                        s + (r.fields.video_starts || 0),
+                    0
+                )
+            
+                +
+            
+                youtube.reduce(
+                    (s, r) =>
+                        s + (r.fields.video_views_total || 0),
+                    0
                 )
 
         };
@@ -279,9 +303,35 @@ export default async function handler(req, res) {
 
                 }));
 
-        const youtubeSummary = youtube.length
-            ? youtube[0].fields
-            : {};
+        const allDates = [
+
+            ...social.map(
+                r => r.fields.fecha
+            ),
+        
+            ...categories.map(
+                r => r.fields.fecha
+            ),
+        
+            ...website.map(
+                r => r.fields.fecha
+            ),
+        
+            ...youtube.map(
+                r => r.fields.fecha
+            )
+        
+        ].filter(Boolean);
+        
+        const startDate =
+            allDates.length
+                ? allDates.sort()[0]
+                : null;
+        
+        const endDate =
+            allDates.length
+                ? allDates.sort().slice(-1)[0]
+                : null;
 
         console.log({
 
@@ -315,6 +365,14 @@ export default async function handler(req, res) {
 
             referralBreakdown,
 
+            dateRange: {
+
+                startDate,
+            
+                endDate
+            
+            },
+                
             youtube: {
 
                 videoViews:
