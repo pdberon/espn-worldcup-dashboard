@@ -41,18 +41,27 @@
 
             <h2>Analytics Dashboard</h2>
 
-            <div class="toolbar">
+            <div class="date-range">
 
-                <label>From</label>
-                <input type="date" id="fromDate">
+                <div class="date-group">
+                    <label>FROM</label>
+                    <input type="date" id="fromDate">
+                </div>
             
-                <label>To</label>
-                <input type="date" id="toDate">
+                <div class="date-group">
+                    <label>TO</label>
+                    <input type="date" id="toDate">
+                </div>
             
-                <button id="applyFilter">
-                    Apply
+                <button id="applyBtn">
+                    UPDATE
                 </button>
             
+            </div>
+            
+            <button id="exportImageBtn">
+                EXPORT PNG
+            </button>
             </div>
         </header>
 
@@ -236,6 +245,9 @@
 
     <script src="js/dashboard.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    
 </body>
+
 
 </html>
