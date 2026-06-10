@@ -24,6 +24,19 @@ body{
 
 }
 
+.top-logo{
+    display:flex;
+    justify-content:center;
+    margin-bottom:20px;
+}
+
+.top-logo img{
+    width:min(700px,80vw);
+    height:auto;
+    display:block;
+    filter:drop-shadow(0 4px 20px rgba(0,0,0,.6));
+}
+
 .hero{
 
     text-align:center;
