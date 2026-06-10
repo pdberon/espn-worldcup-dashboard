@@ -92,7 +92,9 @@ async function loadDashboard(date){
             data.youtube
         );
 
-        renderSources();
+        renderSources(
+            data.dateRange
+        );
 
     }
     catch(error){
@@ -120,7 +122,7 @@ function renderKpis(kpis){
         );
 
     const totalVideoViews =
-    kpis.socialVideoViews +
+    kpis.totalVideoViews +
     kpis.contentStarts +
     (window.youtubeViews || 0);
 
@@ -289,12 +291,25 @@ function renderYoutube(data){
 
 }
 
-function renderSources(){
+function renderSources(
+    dateRange
+){
+
+    const start =
+        formatSourceDate(
+            dateRange.startDate
+        );
+
+    const end =
+        formatSourceDate(
+            dateRange.endDate
+        );
 
     document.getElementById(
         "sourcesText"
     ).innerText =
-        "Sources: Sprinklr Data, YouTube Studio & Adobe Analytics, Jun. 1st to Jul. 8th, All South Accounts";
+
+        `Sources: Sprinklr Data, YouTube Studio & Adobe Analytics, ${start} to ${end}, All South Accounts`;
 
 }
 
@@ -317,5 +332,58 @@ function formatNumber(value){
     }
 
     return value;
+
+}
+
+function ordinal(n){
+
+    const s = [
+        "th",
+        "st",
+        "nd",
+        "rd"
+    ];
+
+    const v = n % 100;
+
+    return n +
+
+        (
+            s[
+                (v - 20) % 10
+            ] ||
+
+            s[v] ||
+
+            s[0]
+        );
+
+}
+
+function formatSourceDate(
+    dateStr
+){
+
+    const d =
+        new Date(dateStr);
+
+    const months = [
+
+        "Jan.",
+        "Feb.",
+        "Mar.",
+        "Apr.",
+        "May.",
+        "Jun.",
+        "Jul.",
+        "Aug.",
+        "Sep.",
+        "Oct.",
+        "Nov.",
+        "Dec."
+
+    ];
+
+    return `${months[d.getMonth()]} ${ordinal(d.getDate())}`;
 
 }
