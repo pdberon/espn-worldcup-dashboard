@@ -303,36 +303,7 @@ export default async function handler(req, res) {
 
                 }));
 
-        const allDates = [
-
-            ...social.map(
-                r => r.fields.fecha
-            ),
         
-            ...categories.map(
-                r => r.fields.fecha
-            ),
-        
-            ...website.map(
-                r => r.fields.fecha
-            ),
-        
-            ...youtube.map(
-                r => r.fields.fecha
-            )
-        
-        ].filter(Boolean);
-        
-        const startDate =
-            allDates.length
-                ? allDates.sort()[0]
-                : null;
-        
-        const endDate =
-            allDates.length
-                ? allDates.sort().slice(-1)[0]
-                : null;
-
         console.log({
 
     social: social.length,
