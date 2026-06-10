@@ -2,23 +2,15 @@ body{
 
     margin:0;
 
-    font-family:
-        Arial,
-        sans-serif;
+    font-family:Arial,sans-serif;
 
     color:white;
 
-    background-image:
-        url("assets/worldcup-bg.png");
+    background:url("/assets/worldcup-bg.png") center center no-repeat fixed;
 
-    background-size:
-        cover;
+    background-size:cover;
 
-    background-position:
-        center;
-
-    background-attachment:
-        fixed;
+    min-height:100vh;
 
 }
 
