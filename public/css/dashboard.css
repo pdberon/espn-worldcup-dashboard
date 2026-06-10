@@ -15,8 +15,8 @@ body{
 }
 
 .page{
-    padding:40px;
-    max-width:1200px;
+    padding:40px 120px;
+    max-width:1000px;
     margin:0 auto;
     padding-bottom:80px;
 }
@@ -107,10 +107,10 @@ body{
 
 .kpi-grid{
     display:grid;
-    grid-template-columns:repeat(3,280px);
+    grid-template-columns:repeat(3,240px);
     justify-content:center;
-    gap:70px 90px;
-    margin:70px auto;
+    gap:60px 60px;
+    margin:60px auto;
 }
 
 
@@ -668,3 +668,12 @@ td:not(:first-child){
     text-align:center;
 }
 
+
+.export-mode .page{
+    max-width:950px;
+    padding:60px 140px;
+}
+
+.export-mode .panel{
+    max-width:950px;
+}
