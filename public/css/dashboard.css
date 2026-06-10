@@ -489,10 +489,9 @@ td:not(:first-child){
 
     align-items:center;
 
-    gap:12px;
+    gap:8px;
 
-    flex-wrap:wrap;
-
+    
 }
 
 .date-arrow{
@@ -507,19 +506,9 @@ td:not(:first-child){
 
 .date-input{
 
-    background:#111;
+    width:140px;
 
-    color:white;
-
-    border:1px solid #c8a45a;
-
-    border-radius:8px;
-
-    padding:10px 14px;
-
-    min-width:170px;
-
-    font-size:14px;
+    padding:6px 10px;
 
 }
 
