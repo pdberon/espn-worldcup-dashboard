@@ -39,7 +39,7 @@ async function loadDates(){
 
         document
             .getElementById(
-                "applyFilter"
+                "applyBtn"
             )
             .addEventListener(
                 "click",
@@ -144,9 +144,8 @@ function renderKpis(kpis){
         "kpiVideoViews"
     ).innerText =
         formatNumber(
-            totalVideoViews
+            kpis.totalVideoViews
         );
-
     document.getElementById(
         "kpiPageViews"
     ).innerText =
