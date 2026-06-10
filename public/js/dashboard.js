@@ -428,7 +428,53 @@ const canvas =
         windowHeight: dashboard.scrollHeight
     
     });
+    
+const finalCanvas =
+    document.createElement('canvas');
 
+const ctx =
+    finalCanvas.getContext('2d');
+
+finalCanvas.width =
+    canvas.width;
+
+finalCanvas.height =
+    canvas.height;
+
+ctx.drawImage(canvas, 0, 0);
+
+ctx.fillStyle = '#A80000';
+
+ctx.fillRect(
+    0,
+    0,
+    35,
+    finalCanvas.height
+);
+
+ctx.fillStyle = '#7CFC00';
+
+ctx.fillRect(
+    0,
+    0,
+    finalCanvas.width,
+    60
+);
+
+ctx.fillRect(
+    0,
+    finalCanvas.height - 60,
+    finalCanvas.width,
+    60
+);
+    
+ctx.fillRect(
+    finalCanvas.width - 35,
+    0,
+    35,
+    finalCanvas.height
+);
+    
     const link =
         document.createElement("a");
 
@@ -436,7 +482,7 @@ const canvas =
         `world-cup-dashboard-${Date.now()}.png`;
 
     link.href =
-        canvas.toDataURL("image/png");
+        finalCanvas.toDataURL("image/png");
 
     link.click();
 controls.style.display = '';
