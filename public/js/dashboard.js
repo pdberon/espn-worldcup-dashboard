@@ -119,11 +119,16 @@ function renderKpis(kpis){
             kpis.posts
         );
 
+    const totalVideoViews =
+    kpis.socialVideoViews +
+    kpis.contentStarts +
+    (window.youtubeViews || 0);
+
     document.getElementById(
         "kpiVideoViews"
     ).innerText =
         formatNumber(
-            kpis.socialVideoViews
+            totalVideoViews
         );
 
     document.getElementById(
@@ -247,6 +252,9 @@ function renderReferrals(rows){
 
 function renderYoutube(data){
 
+    window.youtubeViews =
+    data.videoViews || 0;
+    
     document.getElementById(
         "ytViews"
     ).innerText =
