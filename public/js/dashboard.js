@@ -441,18 +441,9 @@ finalCanvas.width =
 finalCanvas.height =
     canvas.height;
 
-const bg =
-    new Image();
+ctx.fillStyle = "#000000";
 
-bg.src =
-    '/assets/worldcup-bg.png';
-
-await new Promise(resolve => {
-    bg.onload = resolve;
-});
-
-ctx.drawImage(
-    bg,
+ctx.fillRect(
     0,
     0,
     finalCanvas.width,
@@ -463,7 +454,7 @@ const ondas =
     new Image();
 
 ondas.src =
-    '/assets/ondas3.png';
+    '/assets/ondas4.png';
 
 await new Promise(resolve => {
     ondas.onload = resolve;
