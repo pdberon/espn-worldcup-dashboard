@@ -4,7 +4,8 @@ export default async function handler(req, res) {
 
     try {
 
-        const date = req.query.date;
+        const from = req.query.from;
+        const to = req.query.to;
 
         if (!date) {
 
@@ -25,35 +26,44 @@ export default async function handler(req, res) {
     base(TABLES.social)
         .select({
             filterByFormula:
-                `DATETIME_FORMAT({fecha}, 'YYYY-MM-DD')='${date}'`
+                `AND(   DATETIME_FORMAT({fecha}, 'YYYY-MM-DD') >= '${from}',   
+                DATETIME_FORMAT({fecha}, 'YYYY-MM-DD') <= '${to}' )`
         })
         .all(),
 
     base(TABLES.socialCategories)
         .select({
             filterByFormula:
-                `DATETIME_FORMAT({fecha}, 'YYYY-MM-DD')='${date}'`
+                `AND(
+  DATETIME_FORMAT({fecha}, 'YYYY-MM-DD') >= '${from}',
+  DATETIME_FORMAT({fecha}, 'YYYY-MM-DD') <= '${to}'
+)`
         })
         .all(),
 
     base(TABLES.website)
         .select({
             filterByFormula:
-                `DATETIME_FORMAT({fecha}, 'YYYY-MM-DD')='${date}'`
+                `AND(
+  DATETIME_FORMAT({fecha}, 'YYYY-MM-DD') >= '${from}',
+  DATETIME_FORMAT({fecha}, 'YYYY-MM-DD') <= '${to}'
+)`
         })
         .all(),
 
     base(TABLES.websiteRef)
         .select({
             filterByFormula:
-                `DATETIME_FORMAT({fecha}, 'YYYY-MM-DD')='${date}'`
+                `AND(   DATETIME_FORMAT({fecha}, 'YYYY-MM-DD') >= '${from}',   
+                DATETIME_FORMAT({fecha}, 'YYYY-MM-DD') <= '${to}' )`
         })
         .all(),
 
     base(TABLES.youtube)
         .select({
             filterByFormula:
-                `DATETIME_FORMAT({fecha}, 'YYYY-MM-DD')='${date}'`
+                `AND(   DATETIME_FORMAT({fecha}, 'YYYY-MM-DD') >= '${from}',   
+                DATETIME_FORMAT({fecha}, 'YYYY-MM-DD') <= '${to}' )`
         })
         .all()
 
