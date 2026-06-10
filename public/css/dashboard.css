@@ -110,23 +110,15 @@ body{
 
     display:grid;
 
-    grid-template-columns:
-    repeat(auto-fit, minmax(180px, 220px));
-    
-    justify-content:center;
-    
-    gap:30px;
+    grid-template-columns:repeat(3,1fr);
 
-    gap:20px;
+    gap:50px;
 
-    margin-bottom:40px;
+    max-width:1200px;
 
-        min-width:180px;
-
-    overflow:hidden;
+    margin:50px auto;
 
 }
-
 .kpi-card{
 
     background:none;
@@ -160,7 +152,7 @@ body{
 
 .kpi-value{
 
-    font-size:72px;
+    font-size:64px;
 
     font-weight:800;
 
