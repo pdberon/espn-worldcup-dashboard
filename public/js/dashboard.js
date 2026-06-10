@@ -409,12 +409,18 @@ document
 ?.addEventListener("click", async () => {
 
     const dashboard =
-        document.body;
+        document.getElementById('export-container');
 
     const canvas =
-        await html2canvas(dashboard, {
-            scale: 2
-        });
+    await html2canvas(dashboard, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: null,
+        scrollX: 0,
+        scrollY: 0,
+        windowWidth: dashboard.scrollWidth,
+        windowHeight: dashboard.scrollHeight
+    });
 
     const link =
         document.createElement("a");
