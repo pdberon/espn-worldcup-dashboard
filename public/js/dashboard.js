@@ -21,29 +21,40 @@ async function loadDates(){
         const summary =
             await response.json();
 
-        const select =
+        const fromInput =
             document.getElementById(
-                "dateFilter"
+                "fromDate"
             );
 
-        select.innerHTML = `
-            <option value="${summary.latestDate}">
-                ${summary.latestDate}
-            </option>
-        `;
+        const toInput =
+            document.getElementById(
+                "toDate"
+            );
 
-        select.addEventListener(
-            "change",
-            () => {
+        fromInput.value =
+            summary.firstDate;
 
-                loadDashboard(
-                    select.value
-                );
+        toInput.value =
+            summary.latestDate;
 
-            }
-        );
+        document
+            .getElementById(
+                "applyFilter"
+            )
+            .addEventListener(
+                "click",
+                () => {
+
+                    loadDashboard(
+                        fromInput.value,
+                        toInput.value
+                    );
+
+                }
+            );
 
         await loadDashboard(
+            summary.firstDate,
             summary.latestDate
         );
 
@@ -56,13 +67,16 @@ async function loadDates(){
 
 }
 
-async function loadDashboard(date){
+async function loadDashboard(
+    from,
+    to
+){
 
     try{
 
         const response =
             await fetch(
-                `/api/dashboard-data?date=${date}`
+                `/api/dashboard-data?from=${from}&to=${to}`
             );
 
         const data =
