@@ -15,20 +15,14 @@ export default async function handler(req, res) {
         }
 
         const [
-            social,
-            categories,
-            website,
-            websiteRef,
-            youtube
-        ] = await Promise.all([
+    social,
+    categories,
+    website,
+    websiteRef,
+    youtube
+] = await Promise.all([
 
-            base(TABLES.social)
-    .select({
-        maxRecords: 5
-    })
-    .all(),
-
-             base(TABLES.social)
+    base(TABLES.social)
         .select({
             filterByFormula:
                 `DATETIME_FORMAT({fecha}, 'YYYY-MM-DD')='${date}'`
@@ -63,7 +57,7 @@ export default async function handler(req, res) {
         })
         .all()
 
-        ]);
+]);
 
         const kpis = {
 
