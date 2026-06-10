@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+    
+    <title>FIFA World Cup 2026 Dashboard</title>
+    
+    <link
+        rel="stylesheet"
+        href="css/dashboard.css">
+
+</head>
+
+<body>
+
+    <div class="page">
+
+        <header class="hero">
+    <div class="top-logo">
+    <img
+        src="/assets/ESPN_MUNDIAL_H_R.png"
+        alt="ESPN Mundial 2026"
+    >
+</div>
+            <h1>FIFA WORLD CUP 2026</h1>
+
+            <h2>Analytics Dashboard</h2>
+
+            <div class="toolbar">
+
+                <label>Date</label>
+
+                <select id="dateFilter"></select>
+
+            </div>
+
+        </header>
+
+        <!-- KPIS -->
+
+        <section class="kpi-grid">
+
+            <div class="kpi-card">
+                <div class="kpi-label">Engagement</div>
+                <div id="kpiEngagement" class="kpi-value">-</div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-label">Posts</div>
+                <div id="kpiPosts" class="kpi-value">-</div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-label">Total Video Views</div>
+                <div id="kpiVideoViews" class="kpi-value">-</div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-label">Page Views</div>
+                <div id="kpiPageViews" class="kpi-value">-</div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-label">Content Starts</div>
+                <div id="kpiContentStarts" class="kpi-value">-</div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-label">Avg Unique Visitors</div>
+                <div id="kpiUniqueVisitors" class="kpi-value">-</div>
+            </div>
+
+        </section>
+
+        <!-- SOCIAL -->
+
+        <section class="panel">
+
+            <h3>Social Performance</h3>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Network</th>
+                        <th>Posts</th>
+                        <th>Video Views</th>
+                        <th>Engagement</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="socialTable"></tbody>
+
+            </table>
+
+        </section>
+
+        <!-- CONTENT -->
+
+        <section class="panel">
+
+            <h3>Content Performance</h3>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Category</th>
+                        <th>Posts</th>
+                        <th>Video Views</th>
+                        <th>Engagement</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="contentTable"></tbody>
+
+            </table>
+
+        </section>
+
+   <!-- YOUTUBE -->
+
+<section class="panel">
+
+    <h3>YouTube Performance</h3>
+
+    <div class="youtube-grid">
+
+        <div class="youtube-card">
+            <span>Video Views</span>
+            <strong id="ytViews">-</strong>
+        </div>
+
+        <div class="youtube-card">
+            <span>Watch Time (Hours)</span>
+            <strong id="ytWatchTime">-</strong>
+        </div>
+
+        <div class="youtube-card">
+            <span>Live Views</span>
+            <strong id="ytLiveViews">-</strong>
+        </div>
+
+        <div class="youtube-card">
+            <span>Live Watch Time</span>
+            <strong id="ytLiveWatchTime">-</strong>
+        </div>
+
+    </div>
+
+</section>
+        
+        <!-- WEBSITE -->
+
+        <section class="panel">
+
+            <h3>Website Performance</h3>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Region</th>
+                        <th>Page Views</th>
+                        <th>Content Starts</th>
+                        <th>Unique Visitors</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="websiteTable"></tbody>
+
+            </table>
+
+        </section>
+
+        <!-- REFERRALS -->
+
+        <section class="panel">
+
+            <h3>Referral Traffic</h3>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Source</th>
+                        <th>Video</th>
+                        <th>Story</th>
+                        <th>Total</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="referralTable"></tbody>
+
+            </table>
+
+        </section>
+
+ 
+
+        <footer class="sources-footer">
+
+            <span id="sourcesText"></span>
+
+        </footer>
+
+    </div>
+
+    <script src="js/dashboard.js"></script>
+
+</body>
+
+</html>
