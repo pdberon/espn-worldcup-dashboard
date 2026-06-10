@@ -6,13 +6,13 @@ export default async function handler(req, res) {
 
         const from = req.query.from;
         const to = req.query.to;
-
-        if (!date) {
-
+        
+        if (!from || !to) {
+        
             return res.status(400).json({
-                error: "date parameter required"
+                error: "from and to parameters required"
             });
-
+        
         }
 
         const [
@@ -332,35 +332,8 @@ export default async function handler(req, res) {
     ? youtube[0].fields
     : {};
 
-        const allDates = [
-        
-            ...social.map(
-                r => r.fields.fecha
-            ),
-        
-            ...categories.map(
-                r => r.fields.fecha
-            ),
-        
-            ...website.map(
-                r => r.fields.fecha
-            ),
-        
-            ...youtube.map(
-                r => r.fields.fecha
-            )
-        
-        ].filter(Boolean);
-        
-        const startDate =
-            allDates.length
-                ? allDates.sort()[0]
-                : null;
-        
-        const endDate =
-            allDates.length
-                ? allDates.sort().slice(-1)[0]
-                : null;
+        const startDate = from;
+        const endDate = to;
         
         return res.status(200).json({
 
