@@ -401,3 +401,29 @@ function formatSourceDate(
     return `${months[d.getMonth()]} ${ordinal(d.getDate())}`;
 
 }
+
+
+document
+.getElementById("exportImageBtn")
+?.addEventListener("click", async () => {
+
+    const dashboard =
+        document.querySelector(".page");
+
+    const canvas =
+        await html2canvas(dashboard, {
+            scale: 2
+        });
+
+    const link =
+        document.createElement("a");
+
+    link.download =
+        `world-cup-dashboard-${Date.now()}.png`;
+
+    link.href =
+        canvas.toDataURL("image/png");
+
+    link.click();
+
+});
