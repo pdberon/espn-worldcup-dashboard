@@ -1,0 +1,253 @@
+body{
+
+    margin:0;
+
+    font-family:
+        Arial,
+        sans-serif;
+
+    color:white;
+
+    background-image:
+        url("/assets/worldcup-bg.png");
+
+    background-size:
+        cover;
+
+    background-position:
+        center;
+
+    background-attachment:
+        fixed;
+
+}
+
+.page{
+
+    padding:40px;
+
+}
+
+.hero{
+
+    text-align:center;
+
+    margin-bottom:60px;
+
+}
+
+.hero h1{
+
+    font-size:54px;
+
+    margin-bottom:10px;
+
+    text-shadow:
+        0 0 15px black;
+
+}
+
+.hero h2{
+
+    font-size:32px;
+
+    margin:0;
+
+    text-shadow:
+        0 0 15px black;
+
+}
+
+.hero p{
+
+    text-shadow:
+        0 0 15px black;
+
+}
+
+.matches{
+
+    display:flex;
+
+    gap:15px;
+
+    justify-content:center;
+
+    flex-wrap:wrap;
+
+    margin-top:20px;
+
+}
+
+.match-card{
+
+    background:
+        rgba(
+            0,
+            0,
+            0,
+            .35
+        );
+
+    backdrop-filter:
+        blur(6px);
+
+    padding:
+        12px 20px;
+
+    border-radius:
+        12px;
+
+}
+
+.kpi-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap:60px;
+
+    margin-top:50px;
+
+    margin-bottom:40px;
+
+}
+
+.kpi-card{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    text-align:center;
+
+    background:none;
+
+    border:none;
+
+    padding:10px;
+
+}
+
+.kpi-value{
+
+    font-size:110px;
+
+    font-weight:900;
+
+    line-height:.95;
+
+    text-align:center;
+
+    margin-bottom:12px;
+
+    text-shadow:
+        0 0 12px rgba(0,0,0,.9),
+        0 0 25px rgba(0,0,0,.7);
+
+}
+
+.kpi-title{
+
+    text-align:center;
+
+    font-size:15px;
+
+    letter-spacing:2px;
+
+    text-transform:uppercase;
+
+    font-weight:600;
+
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            .90
+        );
+
+}
+
+.kpi-grid.secondary .kpi-value{
+
+    font-size:70px;
+
+}
+
+.dashboard-link{
+
+    text-align:center;
+
+    margin-top:60px;
+
+}
+
+.dashboard-link a{
+
+    display:inline-block;
+
+    background:#d71920;
+
+    color:white;
+
+    text-decoration:none;
+
+    padding:
+        18px 30px;
+
+    border-radius:
+        12px;
+
+    font-weight:bold;
+
+    box-shadow:
+        0 0 20px
+        rgba(
+            0,
+            0,
+            0,
+            .5
+        );
+
+}
+
+@media (max-width:1200px){
+
+    .kpi-grid{
+
+        grid-template-columns:
+            repeat(2,1fr);
+
+    }
+
+}
+
+@media (max-width:768px){
+
+    .kpi-grid{
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+    .kpi-value{
+
+        font-size:72px;
+
+    }
+
+    .kpi-grid.secondary .kpi-value{
+
+        font-size:56px;
+
+    }
+
+}
