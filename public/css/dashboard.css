@@ -18,6 +18,7 @@ body{
     padding:40px;
     max-width:1200px;
     margin:0 auto;
+    padding-bottom:80px;
 }
 
 .top-logo{
@@ -286,21 +287,19 @@ td:not(:first-child){
 
 .sources-footer{
 
-    margin-top:50px;
+    margin-top:40px;
 
-    padding:20px;
+    padding-top:15px;
+
+    border-top:1px solid rgba(212,175,55,.35);
 
     text-align:center;
 
-    font-size:13px;
+    font-size:11px;
 
-    color:
-        rgba(
-            255,
-            255,
-            255,
-            .75
-        );
+    color:rgba(255,255,255,.75);
+
+    letter-spacing:.5px;
 
 }
 
