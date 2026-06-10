@@ -450,3 +450,129 @@ td:not(:first-child){
     min-width:170px;
 
 }
+
+
+.date-range-container{
+
+    text-align:center;
+
+    margin:20px 0 35px;
+
+}
+
+.date-range-title{
+
+    font-size:12px;
+
+    text-transform:uppercase;
+
+    letter-spacing:2px;
+
+    color:#c8a45a;
+
+    margin-bottom:10px;
+
+}
+
+.date-controls{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:12px;
+
+    flex-wrap:wrap;
+
+}
+
+.date-arrow{
+
+    color:#c8a45a;
+
+    font-size:20px;
+
+    font-weight:bold;
+
+}
+
+.date-input{
+
+    background:#111;
+
+    color:white;
+
+    border:1px solid #c8a45a;
+
+    border-radius:8px;
+
+    padding:10px 14px;
+
+    min-width:170px;
+
+    font-size:14px;
+
+}
+
+#applyBtn{
+
+    background:#d71920;
+
+    color:white;
+
+    border:none;
+
+    border-radius:8px;
+
+    padding:10px 20px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+}
+
+#applyBtn:hover{
+
+    background:#ef4444;
+
+}
+
+.export-container{
+
+    margin-top:14px;
+
+}
+
+.export-btn{
+
+    background:#16a34a;
+
+    color:white;
+
+    border:none;
+
+    border-radius:8px;
+
+    padding:10px 20px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    box-shadow:
+        0 4px 12px rgba(22,163,74,.35);
+
+    transition:all .2s ease;
+
+}
+
+.export-btn:hover{
+
+    background:#22c55e;
+
+    transform:translateY(-2px);
+
+}
