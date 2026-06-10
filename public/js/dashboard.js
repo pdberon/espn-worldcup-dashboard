@@ -454,7 +454,7 @@ const ondas =
     new Image();
 
 ondas.src =
-    '/assets/ondas6.png';
+    '/assets/ondas7.png';
 
 await new Promise(resolve => {
     ondas.onload = resolve;
