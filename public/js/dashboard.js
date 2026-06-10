@@ -408,7 +408,7 @@ document
 ?.addEventListener("click", async () => {
 
     const dashboard =
-        document.querySelector(".page");
+        document.body;
 
     const canvas =
         await html2canvas(dashboard, {
