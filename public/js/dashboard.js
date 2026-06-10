@@ -459,6 +459,24 @@ ctx.drawImage(
     finalCanvas.height
 );
 
+const ondas =
+    new Image();
+
+ondas.src =
+    '/assets/ondas.png';
+
+await new Promise(resolve => {
+    ondas.onload = resolve;
+});
+
+ctx.drawImage(
+    ondas,
+    0,
+    0,
+    finalCanvas.width,
+    finalCanvas.height
+);
+
 ctx.drawImage(
     canvas,
     0,
