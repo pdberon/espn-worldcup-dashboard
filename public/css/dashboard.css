@@ -121,6 +121,10 @@ body{
 
     margin-bottom:40px;
 
+        min-width:180px;
+
+    overflow:hidden;
+
 }
 
 .kpi-card{
