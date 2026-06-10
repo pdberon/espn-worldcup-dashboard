@@ -9,7 +9,7 @@ body{
     color:white;
 
     background-image:
-        url("/assets/worldcup-bg.png");
+        url("assets/worldcup-bg.png");
 
     background-size:
         cover;
