@@ -346,7 +346,41 @@ export default async function handler(req, res) {
     youtube: youtube.length
 
 });
-            
+
+        const youtubeSummary = youtube.length
+    ? youtube[0].fields
+    : {};
+
+        const allDates = [
+        
+            ...social.map(
+                r => r.fields.fecha
+            ),
+        
+            ...categories.map(
+                r => r.fields.fecha
+            ),
+        
+            ...website.map(
+                r => r.fields.fecha
+            ),
+        
+            ...youtube.map(
+                r => r.fields.fecha
+            )
+        
+        ].filter(Boolean);
+        
+        const startDate =
+            allDates.length
+                ? allDates.sort()[0]
+                : null;
+        
+        const endDate =
+            allDates.length
+                ? allDates.sort().slice(-1)[0]
+                : null;
+        
         return res.status(200).json({
 
             kpis,
