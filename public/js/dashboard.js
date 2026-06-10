@@ -411,7 +411,7 @@ document
     const controls =
     document.querySelector('.date-range-container');
 
-controls.style.display = 'none';
+controls.style.visibility = 'hidden';
 
     
     const dashboard =
@@ -451,6 +451,16 @@ await new Promise(resolve => {
     bg.onload = resolve;
 });
 
+const bg =
+    new Image();
+
+bg.src =
+    '/assets/worldcup-bg.png';
+
+await new Promise(resolve => {
+    bg.onload = resolve;
+});
+
 ctx.drawImage(
     bg,
     0,
@@ -475,7 +485,7 @@ ctx.drawImage(
         finalCanvas.toDataURL("image/png");
 
     link.click();
-controls.style.display = '';
+controls.style.visibility = '';
 });
 
 
