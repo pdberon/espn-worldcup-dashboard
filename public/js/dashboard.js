@@ -409,15 +409,15 @@ document
 ?.addEventListener("click", async () => {
 
     const dashboard =
-        document.getElementById('export-container');
+    document.getElementById('export-container');
 
-    const canvas =
+const canvas =
     await html2canvas(dashboard, {
         scale: 2,
         useCORS: true,
         backgroundColor: null,
         scrollX: 0,
-        scrollY: 0,
+        scrollY: -window.scrollY,
         windowWidth: dashboard.scrollWidth,
         windowHeight: dashboard.scrollHeight
     });
