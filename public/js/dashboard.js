@@ -135,11 +135,7 @@ function renderKpis(kpis){
             kpis.posts
         );
 
-    const totalVideoViews =
-    kpis.totalVideoViews +
-    kpis.contentStarts +
-    (window.youtubeViews || 0);
-
+    
     document.getElementById(
         "kpiVideoViews"
     ).innerText =
@@ -318,11 +314,16 @@ function renderSources(
             dateRange.endDate
         );
 
+    const range =
+        start === end
+            ? start
+            : `${start} to ${end}`;
+
     document.getElementById(
         "sourcesText"
     ).innerText =
 
-        `Sources: Sprinklr Data, YouTube Studio & Adobe Analytics, ${start} to ${end}, All South Accounts`;
+        `Sources: Sprinklr Data, YouTube Studio & Adobe Analytics | ${range} | All South Accounts`;
 
 }
 
