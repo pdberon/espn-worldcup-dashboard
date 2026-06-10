@@ -441,38 +441,28 @@ finalCanvas.width =
 finalCanvas.height =
     canvas.height;
 
-ctx.drawImage(canvas, 0, 0);
+const bg =
+    new Image();
 
-ctx.fillStyle = '#A80000';
+bg.src =
+    '/assets/worldcup-bg.png';
 
-ctx.fillRect(
-    0,
-    0,
-    35,
-    finalCanvas.height
-);
+await new Promise(resolve => {
+    bg.onload = resolve;
+});
 
-ctx.fillStyle = '#7CFC00';
-
-ctx.fillRect(
+ctx.drawImage(
+    bg,
     0,
     0,
     finalCanvas.width,
-    60
+    finalCanvas.height
 );
 
-ctx.fillRect(
+ctx.drawImage(
+    canvas,
     0,
-    finalCanvas.height - 60,
-    finalCanvas.width,
-    60
-);
-    
-ctx.fillRect(
-    finalCanvas.width - 35,
-    0,
-    35,
-    finalCanvas.height
+    0
 );
     
     const link =
