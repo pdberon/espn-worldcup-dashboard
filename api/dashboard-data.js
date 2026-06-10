@@ -234,6 +234,7 @@ website.forEach(row => {
                 websiteBreakdownMap[region] = {
                     region,
                     pageViews: 0,
+                    pageViewsDstory: 0,
                     contentStarts: 0,
                     uniqueVisitors: 0
                 };
@@ -242,7 +243,10 @@ website.forEach(row => {
         
             websiteBreakdownMap[region].pageViews +=
                 row.fields.page_views || 0;
-        
+
+            websiteBreakdownMap[region].pageViewsDstory +=
+                row.fields.page_views_dstory || 0;
+    
             websiteBreakdownMap[region].contentStarts +=
                 row.fields.video_starts || 0;
         
