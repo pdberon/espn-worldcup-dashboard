@@ -451,16 +451,6 @@ await new Promise(resolve => {
     bg.onload = resolve;
 });
 
-const bg =
-    new Image();
-
-bg.src =
-    '/assets/worldcup-bg.png';
-
-await new Promise(resolve => {
-    bg.onload = resolve;
-});
-
 ctx.drawImage(
     bg,
     0,
