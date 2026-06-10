@@ -113,7 +113,11 @@ body{
     display:grid;
 
     grid-template-columns:
-        repeat(6,1fr);
+    repeat(auto-fit, minmax(180px, 220px));
+    
+    justify-content:center;
+    
+    gap:30px;
 
     gap:20px;
 
