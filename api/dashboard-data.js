@@ -194,6 +194,21 @@ export default async function handler(req, res) {
 
         });
 
+        const youtubeViewsTotal =
+            youtube.reduce(
+                (s, r) =>
+                    s + (r.fields.video_views_total || 0),
+                0
+            );
+        
+        if (socialBreakdownMap["YouTube"]) {
+        
+            socialBreakdownMap["YouTube"].videoViews =
+                youtubeViewsTotal;
+        
+        }
+
+        
         const contentBreakdownMap = {};
 
         categories.forEach(row => {
