@@ -176,13 +176,18 @@ function renderSocial(rows){
 
     rows.forEach(row => {
 
+        const postsValue =
+            row.network === "YouTube"
+                ? "N/A"
+                : formatNumber(row.posts);
+        
         table.innerHTML += `
-            <tr>
-                <td>${row.network}</td>
-                <td>${formatNumber(row.posts)}</td>
-                <td>${formatNumber(row.videoViews)}</td>
-                <td>${formatNumber(row.engagement)}</td>
-            </tr>
+        <tr>
+            <td>${row.network}</td>
+            <td>${postsValue}</td>
+            <td>${formatNumber(row.videoViews)}</td>
+            <td>${formatNumber(row.engagement)}</td>
+        </tr>
         `;
 
     });
