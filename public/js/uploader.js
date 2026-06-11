@@ -515,6 +515,9 @@ function detectCategory(fileName){
     if(name.includes("onlyphotos"))
         return "ONLY_PHOTOS";
 
+    if(name.includes("fifamax"))
+    return "FIFA_MAX";
+
     return "UNKNOWN";
 
 }
