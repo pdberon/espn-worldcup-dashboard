@@ -128,16 +128,11 @@ export default async function handler(req, res) {
                 latamPageViews,
 
             contentStarts:
-                website.reduce(
-                    (s, r) => s + (r.fields.video_starts || 0),
-                    0
-                ),
+                latamContentStarts,
 
             avgUniqueVisitors:
                 latamUniqueVisitors,
 
-            avgUniqueVisitors:
-                latamRow?.fields?.unique_visitors || 0,
 
             youtubeViews:
                 youtube.reduce(
@@ -386,6 +381,15 @@ website.forEach(row => {
       return res.status(200).json({
 
     kpis,
+
+    pageViews:
+    latamPageViews,
+
+    contentStarts:
+        latamContentStarts,
+    
+    avgUniqueVisitors:
+        latamUniqueVisitors,
 
     socialBreakdown:
         Object.values(
