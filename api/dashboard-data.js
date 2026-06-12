@@ -269,7 +269,8 @@ website.forEach(row => {
                     pageViews: 0,
                     pageViewsDstory: 0,
                     contentStarts: 0,
-                    uniqueVisitors: 0
+                    uniqueVisitors: 0,
+                    days: 0
                 };
         
             }
@@ -285,11 +286,23 @@ website.forEach(row => {
         
             websiteBreakdownMap[region].uniqueVisitors +=
                 row.fields.unique_visitors || 0;
+            
+            websiteBreakdownMap[region].days += 1;
         
         });
         
-        const websiteBreakdown =
-            Object.values(websiteBreakdownMap);
+            const websiteBreakdown =
+                Object.values(websiteBreakdownMap)
+                    .map(row => ({
+            
+                        ...row,
+            
+                        uniqueVisitors:
+                            row.days
+                                ? row.uniqueVisitors / row.days
+                                : 0
+            
+                    }));
 
         const referralTotals = {
 
