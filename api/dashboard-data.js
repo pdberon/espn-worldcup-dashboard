@@ -362,54 +362,37 @@ website.forEach(row => {
 
 });
 
-        const youtubeSummary = youtube.length
-    ? youtube[0].fields
-    : {};
+       youtube: {
 
-        const startDate = from;
-        const endDate = to;
+            videoViews:
+                youtube.reduce(
+                    (s, r) =>
+                        s + (r.fields.video_views_total || 0),
+                    0
+                ),
         
-        return res.status(200).json({
-
-            kpis,
-
-            socialBreakdown:
-                Object.values(
-                    socialBreakdownMap
+            watchTime:
+                youtube.reduce(
+                    (s, r) =>
+                        s + (r.fields.watch_time_hours_total || 0),
+                    0
                 ),
-
-            contentBreakdown:
-                Object.values(
-                    contentBreakdownMap
+        
+            liveViews:
+                youtube.reduce(
+                    (s, r) =>
+                        s + (r.fields.live_video_views || 0),
+                    0
                 ),
-
-            websiteBreakdown,
-
-            referralBreakdown,
-
-            dateRange: {
-
-                startDate,
-            
-                endDate
-            
-            },
-                
-            youtube: {
-
-                videoViews:
-                    youtubeSummary.video_views_total || 0,
-
-                watchTime:
-                    youtubeSummary.watch_time_hours_total || 0,
-
-                liveViews:
-                    youtubeSummary.live_video_views || 0,
-
-                liveWatchTime:
-                    youtubeSummary.live_watch_time_hours || 0
-
-            }
+        
+            liveWatchTime:
+                youtube.reduce(
+                    (s, r) =>
+                        s + (r.fields.live_watch_time_hours || 0),
+                    0
+                )
+        
+        }
 
         });
 
