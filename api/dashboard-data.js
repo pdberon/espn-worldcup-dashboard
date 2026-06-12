@@ -362,39 +362,65 @@ website.forEach(row => {
 
 });
 
-       youtube: {
+      return res.status(200).json({
 
-            videoViews:
-                youtube.reduce(
-                    (s, r) =>
-                        s + (r.fields.video_views_total || 0),
-                    0
-                ),
-        
-            watchTime:
-                youtube.reduce(
-                    (s, r) =>
-                        s + (r.fields.watch_time_hours_total || 0),
-                    0
-                ),
-        
-            liveViews:
-                youtube.reduce(
-                    (s, r) =>
-                        s + (r.fields.live_video_views || 0),
-                    0
-                ),
-        
-            liveWatchTime:
-                youtube.reduce(
-                    (s, r) =>
-                        s + (r.fields.live_watch_time_hours || 0),
-                    0
-                )
-        
-        }
+    kpis,
 
-        });
+    socialBreakdown:
+        Object.values(
+            socialBreakdownMap
+        ),
+
+    contentBreakdown:
+        Object.values(
+            contentBreakdownMap
+        ),
+
+    websiteBreakdown,
+
+    referralBreakdown,
+
+    dateRange: {
+
+        startDate: from,
+
+        endDate: to
+
+    },
+
+    youtube: {
+
+        videoViews:
+            youtube.reduce(
+                (s, r) =>
+                    s + (r.fields.video_views_total || 0),
+                0
+            ),
+
+        watchTime:
+            youtube.reduce(
+                (s, r) =>
+                    s + (r.fields.watch_time_hours_total || 0),
+                0
+            ),
+
+        liveViews:
+            youtube.reduce(
+                (s, r) =>
+                    s + (r.fields.live_video_views || 0),
+                0
+            ),
+
+        liveWatchTime:
+            youtube.reduce(
+                (s, r) =>
+                    s + (r.fields.live_watch_time_hours || 0),
+                0
+            )
+
+    }
+
+});
 
     }
     catch (error) {
