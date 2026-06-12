@@ -496,6 +496,8 @@ ctx.fillRect(
     finalCanvas.height
 );
 
+// CAPA 2 - ONDAS
+
 const ondas =
     new Image();
 
@@ -513,6 +515,28 @@ ctx.drawImage(
     finalCanvas.width,
     finalCanvas.height
 );
+
+// CAPA 3 - BORDE
+
+const borde =
+    new Image();
+
+borde.src =
+    '/assets/borde_colores.png';
+
+await new Promise(resolve => {
+    borde.onload = resolve;
+});
+
+ctx.drawImage(
+    borde,
+    0,
+    0,
+    finalCanvas.width,
+    finalCanvas.height
+);
+
+// CAPA 4 - DASHBOARD
 
 ctx.drawImage(
     canvas,
