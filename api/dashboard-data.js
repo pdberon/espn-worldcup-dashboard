@@ -69,6 +69,13 @@ export default async function handler(req, res) {
 
 ]);
 
+        const latamRow =
+    website.find(
+        r =>
+            r.fields.region === "LATAM"
+    );
+
+        
         const kpis = {
 
             engagement:
@@ -90,10 +97,7 @@ export default async function handler(req, res) {
                 ),
 
             pageViews:
-                website.reduce(
-                    (s, r) => s + (r.fields.page_views || 0),
-                    0
-                ),
+                latamRow?.fields?.page_views || 0,
 
             contentStarts:
                 website.reduce(
@@ -108,15 +112,7 @@ export default async function handler(req, res) {
                 ),
 
             avgUniqueVisitors:
-                website.length
-                    ? Math.round(
-                        website.reduce(
-                            (s, r) =>
-                                s + (r.fields.unique_visitors || 0),
-                            0
-                        ) / website.length
-                    )
-                    : 0,
+                latamRow?.fields?.unique_visitors || 0,
 
             youtubeViews:
                 youtube.reduce(
