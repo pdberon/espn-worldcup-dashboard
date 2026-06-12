@@ -227,7 +227,48 @@ function renderWebsite(rows){
 
     table.innerHTML = "";
 
-    rows.forEach(row => {
+    const regionalRows =
+        rows.filter(
+            r =>
+                r.region === "SOUTH" ||
+                r.region === "LATAM"
+        );
+
+    const countryRows =
+        rows.filter(
+            r =>
+                r.region !== "SOUTH" &&
+                r.region !== "LATAM"
+        );
+
+    countryRows.sort(
+        (a, b) =>
+            a.region.localeCompare(
+                b.region
+            )
+    );
+
+    [
+        ...regionalRows,
+        { separator: true },
+        ...countryRows
+    ].forEach(row => {
+
+        if (row.separator) {
+
+            table.innerHTML += `
+                <tr>
+                    <td colspan="5"
+                        style="
+                            border-top:2px solid rgba(255,255,255,.25);
+                            height:12px;
+                        ">
+                    </td>
+                </tr>
+            `;
+
+            return;
+        }
 
         table.innerHTML += `
             <tr>
