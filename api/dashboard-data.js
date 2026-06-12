@@ -84,11 +84,13 @@ export default async function handler(req, res) {
             );
         
         const latamUniqueVisitors =
-            latamRows.reduce(
-                (s, r) =>
-                    s + (r.fields.unique_visitors || 0),
-                0
-            );
+            latamRows.length
+                ? latamRows.reduce(
+                      (s, r) =>
+                          s + (r.fields.unique_visitors || 0),
+                      0
+                  ) / latamRows.length
+                : 0;
         
         const latamContentStarts =
             latamRows.reduce(
