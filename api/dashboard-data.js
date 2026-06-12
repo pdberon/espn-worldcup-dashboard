@@ -69,12 +69,40 @@ export default async function handler(req, res) {
 
 ]);
 
-        const latamRow =
-    website.find(
-        r =>
-            r.fields.region === "LATAM"
-    );
 
+        const latamRows =
+            website.filter(
+                r =>
+                    r.fields.region === "LATAM"
+            );
+        
+        const latamPageViews =
+            latamRows.reduce(
+                (s, r) =>
+                    s + (r.fields.page_views || 0),
+                0
+            );
+        
+        const latamUniqueVisitors =
+            latamRows.reduce(
+                (s, r) =>
+                    s + (r.fields.unique_visitors || 0),
+                0
+            );
+        
+        const latamContentStarts =
+            latamRows.reduce(
+                (s, r) =>
+                    s + (r.fields.video_starts || 0),
+                0
+            );
+        
+        const latamPageViewsDstory =
+            latamRows.reduce(
+                (s, r) =>
+                    s + (r.fields.page_views_dstory || 0),
+                0
+            );
         
         const kpis = {
 
@@ -96,8 +124,8 @@ export default async function handler(req, res) {
                     0
                 ),
 
-            pageViews:
-                latamRow?.fields?.page_views || 0,
+           pageViews:
+                latamPageViews,
 
             contentStarts:
                 website.reduce(
@@ -105,11 +133,8 @@ export default async function handler(req, res) {
                     0
                 ),
 
-            uniqueVisitors:
-                website.reduce(
-                    (s, r) => s + (r.fields.unique_visitors || 0),
-                    0
-                ),
+            avgUniqueVisitors:
+                latamUniqueVisitors,
 
             avgUniqueVisitors:
                 latamRow?.fields?.unique_visitors || 0,
