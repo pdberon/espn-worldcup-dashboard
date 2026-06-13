@@ -72,14 +72,20 @@ export default async function handler(req,res){
                         row["Total Engagements Cross-Platform - BI (SUM)"]
                     ),
 
-                tournament_day:
-                    matches?.[0]?.tournament_day || null,
-
                 matchday:
-                    matches?.[0]?.matchday || null,
-
+                    matches?.[0]?.matchday
+                        ? String(matches[0].matchday)
+                        : "",
+                
+                tournament_day:
+                    Number(
+                        matches?.[0]?.tournament_day || 0
+                    ),
+                
                 stage:
-                    matches?.[0]?.stage || null
+                    matches?.[0]?.stage
+                        ? String(matches[0].stage)
+                        : "",
 
             };
 
