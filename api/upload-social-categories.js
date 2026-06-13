@@ -88,7 +88,14 @@ export default async function handler(req,res){
                         : "",
 
             };
+            
 
+            console.log(
+                "FIELDS:",
+                JSON.stringify(fields, null, 2)
+            );
+
+            
             if(existing){
 
                 await base(
