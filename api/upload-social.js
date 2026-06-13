@@ -80,8 +80,8 @@ export default async function handler(req,res){
                 tournament_day:
                     matches?.[0]?.tournament_day || null,
 
-                matchday:
-                    matches?.[0]?.matchday || null,
+matchday:
+    null,
 
                 stage:
                     matches?.[0]?.stage || null
