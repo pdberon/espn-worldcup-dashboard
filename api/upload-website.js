@@ -178,8 +178,8 @@ matchday:
                     tournament_day:
                         tournamentDay,
 
-                    matchday:
-                        matchday,
+matchday:
+    null,
 
                     stage:
                         stage
