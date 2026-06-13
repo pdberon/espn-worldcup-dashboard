@@ -90,8 +90,8 @@ export default async function handler(req,res){
                     tournament_day:
                         tournamentDay,
 
-                    matchday:
-                        matchday,
+matchday:
+    null,
 
                     stage:
                         stage
