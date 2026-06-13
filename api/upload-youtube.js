@@ -30,6 +30,12 @@ export default async function handler(req,res){
         const stage =
             matches?.[0]?.stage || null;
 
+        console.log(
+            "MATCH DATA",
+            JSON.stringify(matches?.[0], null, 2)
+        );
+
+        
         const fields = {
 
             primary_key:
