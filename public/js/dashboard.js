@@ -421,12 +421,10 @@ function ordinal(n){
 
 }
 
-function formatSourceDate(
-    dateStr
-){
+function formatSourceDate(dateStr){
 
-    const d =
-        new Date(dateStr);
+    const [year, month, day] =
+        dateStr.split('-').map(Number);
 
     const months = [
 
@@ -445,7 +443,7 @@ function formatSourceDate(
 
     ];
 
-    return `${months[d.getMonth()]} ${ordinal(d.getDate())}`;
+    return `${months[month - 1]} ${ordinal(day)}`;
 
 }
 
