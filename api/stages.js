@@ -90,7 +90,99 @@ export default async function handler(req, res){
 
         const stages = [];
 
-             if(firstGroupDate){
+let firstGroupDate = null;
+let lastDate = null;
+let earliestNoStage = null;
+
+matches.forEach(match => {
+
+    const stage =
+        match.fields.stage;
+
+    const date =
+        match.fields.match_date;
+
+    if (
+        stage ===
+        "Group Phase - Match#1"
+    ) {
+
+        if (
+            !firstGroupDate ||
+            date < firstGroupDate
+        ) {
+
+            firstGroupDate = date;
+
+        }
+
+    }
+
+    if (
+        !lastDate ||
+        date > lastDate
+    ) {
+
+        lastDate = date;
+
+    }
+
+    if (
+        !stage &&
+        (
+            !earliestNoStage ||
+            date < earliestNoStage
+        )
+    ) {
+
+        earliestNoStage = date;
+
+    }
+
+    if (!stage) {
+        return;
+    }
+
+    if (!stagesMap[stage]) {
+
+        stagesMap[stage] = {
+
+            stage,
+
+            from: date,
+
+            to: date
+
+        };
+
+    }
+
+    if (
+        date <
+        stagesMap[stage].from
+    ) {
+
+        stagesMap[stage].from =
+            date;
+
+    }
+
+    if (
+        date >
+        stagesMap[stage].to
+    ) {
+
+        stagesMap[stage].to =
+            date;
+
+    }
+
+});
+
+if (
+    earliestNoStage &&
+    firstGroupDate
+) {
 
     const d =
         new Date(
@@ -102,34 +194,22 @@ export default async function handler(req, res){
         d.getDate() - 1
     );
 
-    const beforeDate =
-        d.toISOString()
-         .slice(0,10);
+    stages.push({
 
-    let earliestDate = null;
+        stage:
+            "Before World Cup Start",
 
-    matches.forEach(match => {
+        from:
+            earliestNoStage,
 
-        const stage =
-            match.fields.stage;
-
-        const date =
-            match.fields.match_date;
-
-        if(
-            !stage &&
-            (
-                !earliestDate ||
-                date < earliestDate
-            )
-        ){
-
-            earliestDate = date;
-
-        }
+        to:
+            d
+                .toISOString()
+                .slice(0,10)
 
     });
 
+}
 
 const groupStages = [
 
@@ -153,34 +233,53 @@ const playoffStages = [
 const groupData =
     Object.values(stagesMap)
         .filter(
-            s => groupStages.includes(s.stage)
+            s =>
+                groupStages.includes(
+                    s.stage
+                )
         )
         .sort(
             (a,b) =>
-                a.from.localeCompare(b.from)
+                a.from.localeCompare(
+                    b.from
+                )
         );
+
+if (groupData.length) {
+
+    stages.push({
+
+        stage:
+            "Group Phase",
+
+        from:
+            groupData[0].from,
+
+        to:
+            groupData[
+                groupData.length - 1
+            ].to
+
+    });
+
+}
 
 const playoffData =
     Object.values(stagesMap)
         .filter(
-            s => playoffStages.includes(s.stage)
+            s =>
+                playoffStages.includes(
+                    s.stage
+                )
         )
         .sort(
             (a,b) =>
-                a.from.localeCompare(b.from)
+                a.from.localeCompare(
+                    b.from
+                )
         );
 
-const playoffData =
-    Object.values(stagesMap)
-        .filter(
-            s => playoffStages.includes(s.stage)
-        )
-        .sort(
-            (a,b) =>
-                a.from.localeCompare(b.from)
-        );
-
-if(playoffData.length){
+if (playoffData.length) {
 
     stages.push({
 
@@ -199,64 +298,39 @@ if(playoffData.length){
 
 }
 
+if (
+    firstGroupDate &&
+    lastDate
+) {
 
-                 
     stages.push({
 
         stage:
-            "Before World Cup Start",
+            "Full World Cup",
 
         from:
-            earliestDate,
+            firstGroupDate,
 
         to:
-            beforeDate
+            lastDate
 
     });
 
 }
 
-        let lastDate = null;
+stages.push(
 
-matches.forEach(match => {
+    ...Object.values(
+        stagesMap
+    ).sort(
 
-    const date =
-        match.fields.match_date;
+        (a,b) =>
+            a.from.localeCompare(
+                b.from
+            )
 
-    if(
-        !lastDate ||
-        date > lastDate
-    ){
+    )
 
-        lastDate = date;
-
-    }
-
-});
-
-stages.push({
-
-    stage:
-        "Full World Cup",
-
-    from:
-        firstGroupDate,
-
-    to:
-        lastDate
-
-});
-
-        
-
-     stages.push(
-    ...Object.values(stagesMap)
-        .sort(
-            (a, b) =>
-                a.from.localeCompare(
-                    b.from
-                )
-        )
 );
 
         res.status(200).json(stages);
