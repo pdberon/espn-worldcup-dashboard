@@ -154,24 +154,21 @@ const groupData =
     Object.values(stagesMap)
         .filter(
             s => groupStages.includes(s.stage)
+        )
+        .sort(
+            (a,b) =>
+                a.from.localeCompare(b.from)
         );
 
-if(groupData.length){
-
-    stages.push({
-
-        stage:
-            "Group Phase",
-
-        from:
-            groupData[0].from,
-
-        to:
-            groupData[groupData.length - 1].to
-
-    });
-
-}
+const playoffData =
+    Object.values(stagesMap)
+        .filter(
+            s => playoffStages.includes(s.stage)
+        )
+        .sort(
+            (a,b) =>
+                a.from.localeCompare(b.from)
+        );
 
 const playoffData =
     Object.values(stagesMap)
