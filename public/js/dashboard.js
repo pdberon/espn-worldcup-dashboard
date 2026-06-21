@@ -37,6 +37,8 @@ async function loadDates(){
         toInput.value =
             summary.latestDate;
 
+        await loadStages();
+
         document
             .getElementById(
                 "applyBtn"
