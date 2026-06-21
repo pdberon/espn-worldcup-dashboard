@@ -1,8 +1,8 @@
 import base, { TABLES } from "../lib/airtable.js";
 
-export default async function handler(req, res){
+export default async function handler(req, res) {
 
-    try{
+    try {
 
         const matches =
             await base(TABLES.matches)
@@ -19,6 +19,8 @@ export default async function handler(req, res){
         const stagesMap = {};
 
         let firstGroupDate = null;
+        let lastDate = null;
+        let earliestNoStage = null;
 
         matches.forEach(match => {
 
@@ -28,15 +30,15 @@ export default async function handler(req, res){
             const date =
                 match.fields.match_date;
 
-            if(
+            if (
                 stage ===
                 "Group Phase - Match#1"
-            ){
+            ) {
 
-                if(
+                if (
                     !firstGroupDate ||
                     date < firstGroupDate
-                ){
+                ) {
 
                     firstGroupDate = date;
 
@@ -44,23 +46,32 @@ export default async function handler(req, res){
 
             }
 
-        });
+            if (
+                !lastDate ||
+                date > lastDate
+            ) {
 
-        matches.forEach(match => {
-
-            const stage =
-                match.fields.stage;
-
-            const date =
-                match.fields.match_date;
-
-            if(!stage){
-
-                return;
+                lastDate = date;
 
             }
 
-            if(!stagesMap[stage]){
+            if (
+                !stage &&
+                (
+                    !earliestNoStage ||
+                    date < earliestNoStage
+                )
+            ) {
+
+                earliestNoStage = date;
+
+            }
+
+            if (!stage) {
+                return;
+            }
+
+            if (!stagesMap[stage]) {
 
                 stagesMap[stage] = {
 
@@ -74,15 +85,23 @@ export default async function handler(req, res){
 
             }
 
-            if(date < stagesMap[stage].from){
+            if (
+                date <
+                stagesMap[stage].from
+            ) {
 
-                stagesMap[stage].from = date;
+                stagesMap[stage].from =
+                    date;
 
             }
 
-            if(date > stagesMap[stage].to){
+            if (
+                date >
+                stagesMap[stage].to
+            ) {
 
-                stagesMap[stage].to = date;
+                stagesMap[stage].to =
+                    date;
 
             }
 
@@ -90,340 +109,160 @@ export default async function handler(req, res){
 
         const stages = [];
 
-let firstGroupDate = null;
-let lastDate = null;
-let earliestNoStage = null;
-
-matches.forEach(match => {
-
-    const stage =
-        match.fields.stage;
-
-    const date =
-        match.fields.match_date;
-
-    if (
-        stage ===
-        "Group Phase - Match#1"
-    ) {
-
         if (
-            !firstGroupDate ||
-            date < firstGroupDate
+            earliestNoStage &&
+            firstGroupDate
         ) {
 
-            firstGroupDate = date;
+            const d =
+                new Date(
+                    firstGroupDate +
+                    "T12:00:00"
+                );
+
+            d.setDate(
+                d.getDate() - 1
+            );
+
+            stages.push({
+
+                stage:
+                    "Before World Cup Start",
+
+                from:
+                    earliestNoStage,
+
+                to:
+                    d.toISOString()
+                     .slice(0,10)
+
+            });
 
         }
 
-    }
-
-    if (
-        !lastDate ||
-        date > lastDate
-    ) {
-
-        lastDate = date;
-
-    }
-
-    if (
-        !stage &&
-        (
-            !earliestNoStage ||
-            date < earliestNoStage
-        )
-    ) {
-
-        earliestNoStage = date;
-
-    }
-
-    if (!stage) {
-        return;
-    }
-
-    if (!stagesMap[stage]) {
-
-        stagesMap[stage] = {
-
-            stage,
-
-            from: date,
-
-            to: date
-
-        };
-
-    }
-
-    if (
-        date <
-        stagesMap[stage].from
-    ) {
-
-        stagesMap[stage].from =
-            date;
-
-    }
-
-    if (
-        date >
-        stagesMap[stage].to
-    ) {
-
-        stagesMap[stage].to =
-            date;
-
-    }
-
-});
-
-if (
-    earliestNoStage &&
-    firstGroupDate
-) {
-
-    const d =
-        new Date(
-            firstGroupDate +
-            "T12:00:00"
-        );
-
-    d.setDate(
-        d.getDate() - 1
-    );
-
-    stages.push({
-
-        stage:
-            "Before World Cup Start",
-
-        from:
-            earliestNoStage,
-
-        to:
-            d
-                .toISOString()
-                .slice(0,10)
-
-    });
-
-}
-
-const groupStages = [
-
-    "Group Phase - Match#1",
-    "Group Phase - Match#2",
-    "Group Phase - Match#3"
-
-];
-
-const playoffStages = [
-
-    "Round of 32 - 16vos de final",
-    "Round of 16 - Octavos de Final",
-    "Quarterfinals - Cuartos de final",
-    "Semi-Finals - Semifinales",
-    "Third Place - Tercer Puesto",
-    "Final"
-
-];
-
-
-const stages = [];
-
-let lastDate = null;
-let earliestDate = null;
-
-matches.forEach(match => {
-
-    const stage =
-        match.fields.stage;
-
-    const date =
-        match.fields.match_date;
-
-    if (
-        !lastDate ||
-        date > lastDate
-    ) {
-
-        lastDate = date;
-
-    }
-
-    if (
-        !stage &&
-        (
-            !earliestDate ||
-            date < earliestDate
-        )
-    ) {
-
-        earliestDate = date;
-
-    }
-
-});
-
-if (
-    earliestDate &&
-    firstGroupDate
-) {
-
-    const d =
-        new Date(
-            firstGroupDate +
-            "T12:00:00"
-        );
-
-    d.setDate(
-        d.getDate() - 1
-    );
-
-    stages.push({
-
-        stage:
-            "Before World Cup Start",
-
-        from:
-            earliestDate,
-
-        to:
-            d.toISOString().slice(0,10)
-
-    });
-
-}
-
-const groupStages = [
-
-    "Group Phase - Match#1",
-    "Group Phase - Match#2",
-    "Group Phase - Match#3"
-
-];
-
-const playoffStages = [
-
-    "Round of 32 - 16vos de final",
-    "Round of 16 - Octavos de Final",
-    "Quarterfinals - Cuartos de final",
-    "Semi-Finals - Semifinales",
-    "Third Place - Tercer Puesto",
-    "Final"
-
-];
-
-const groupData =
-    Object.values(stagesMap)
-        .filter(
-            s =>
-                groupStages.includes(
-                    s.stage
+        const groupStages = [
+
+            "Group Phase - Match#1",
+            "Group Phase - Match#2",
+            "Group Phase - Match#3"
+
+        ];
+
+        const playoffStages = [
+
+            "Round of 32 - 16vos de final",
+            "Round of 16 - Octavos de Final",
+            "Quarterfinals - Cuartos de final",
+            "Semi-Finals - Semifinales",
+            "Third Place - Tercer Puesto",
+            "Final"
+
+        ];
+
+        const groupData =
+            Object.values(stagesMap)
+                .filter(
+                    s =>
+                        groupStages.includes(
+                            s.stage
+                        )
                 )
-        )
-        .sort(
-            (a,b) =>
-                a.from.localeCompare(
-                    b.from
+                .sort(
+                    (a,b) =>
+                        a.from.localeCompare(
+                            b.from
+                        )
+                );
+
+        if (groupData.length) {
+
+            stages.push({
+
+                stage:
+                    "Group Phase",
+
+                from:
+                    groupData[0].from,
+
+                to:
+                    groupData[
+                        groupData.length - 1
+                    ].to
+
+            });
+
+        }
+
+        const playoffData =
+            Object.values(stagesMap)
+                .filter(
+                    s =>
+                        playoffStages.includes(
+                            s.stage
+                        )
                 )
-        );
+                .sort(
+                    (a,b) =>
+                        a.from.localeCompare(
+                            b.from
+                        )
+                );
 
-if(groupData.length){
+        if (playoffData.length) {
 
-    stages.push({
+            stages.push({
 
-        stage:
-            "Group Phase",
+                stage:
+                    "Playoff Phase",
 
-        from:
-            groupData[0].from,
+                from:
+                    playoffData[0].from,
 
-        to:
-            groupData[
-                groupData.length - 1
-            ].to
+                to:
+                    playoffData[
+                        playoffData.length - 1
+                    ].to
 
-    });
+            });
 
-}
+        }
 
-const playoffData =
-    Object.values(stagesMap)
-        .filter(
-            s =>
-                playoffStages.includes(
-                    s.stage
-                )
-        )
-        .sort(
-            (a,b) =>
-                a.from.localeCompare(
-                    b.from
-                )
-        );
-
-if(playoffData.length){
-
-    stages.push({
-
-        stage:
-            "Playoff Phase",
-
-        from:
-            playoffData[0].from,
-
-        to:
-            playoffData[
-                playoffData.length - 1
-            ].to
-
-    });
-
-}
-
-if (
-    firstGroupDate &&
-    lastDate
-) {
-
-    stages.push({
-
-        stage:
-            "Full World Cup",
-
-        from:
-            firstGroupDate,
-
-        to:
+        if (
+            firstGroupDate &&
             lastDate
+        ) {
 
-    });
+            stages.push({
 
-}
+                stage:
+                    "Full World Cup",
 
-stages.push(
+                from:
+                    firstGroupDate,
 
-    ...Object.values(stagesMap)
-        .sort(
-            (a,b) =>
-                a.from.localeCompare(
-                    b.from
+                to:
+                    lastDate
+
+            });
+
+        }
+
+        stages.push(
+
+            ...Object.values(stagesMap)
+                .sort(
+                    (a,b) =>
+                        a.from.localeCompare(
+                            b.from
+                        )
                 )
-        )
 
-);
+        );
 
-
-
-
-        
         res.status(200).json(stages);
 
     }
-    catch(error){
+    catch (error) {
 
         console.error(error);
 
