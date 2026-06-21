@@ -143,8 +143,8 @@ export default async function handler(req, res) {
         const groupStages = [
 
             "Group Phase - Match#1",
-            "Group Phase - Match#2",
-            "Group Phase - Match#3"
+            "Group Phase - Match #2",
+            "Group Phase - Match #3"
 
         ];
 
