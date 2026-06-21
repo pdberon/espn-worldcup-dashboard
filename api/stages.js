@@ -90,31 +90,48 @@ export default async function handler(req, res){
 
         const stages = [];
 
-        if(firstGroupDate){
+                if(firstGroupDate){
+                
+                    const d =
+                        new Date(
+                            firstGroupDate +
+                            "T12:00:00"
+                        );
+                
+                    d.setDate(
+                        d.getDate() - 1
+                    );
+                
+                    const beforeDate =
+                        d.toISOString()
+                         .slice(0,10);
+                
+                    stages.push({
+                
+                        stage:
+                            "Before World Cup Start",
+                
+                        from:
+                            matches[0]
+                                .fields
+                                .match_date,
+                
+                        to:
+                            beforeDate
+                
+                    });
+                
+                }
 
-            stages.push({
-
-                stage:
-                    "Before World Cup Start",
-
-                from:
-                    matches[0].fields.match_date,
-
-                to:
-                    new Date(
-                        new Date(firstGroupDate)
-                        .getTime() - 86400000
-                    )
-                    .toISOString()
-                    .slice(0,10)
-
-            });
-
-        }
-
-        stages.push(
-            ...Object.values(stagesMap)
-        );
+     stages.push(
+    ...Object.values(stagesMap)
+        .sort(
+            (a, b) =>
+                a.from.localeCompare(
+                    b.from
+                )
+        )
+);
 
         res.status(200).json(stages);
 
