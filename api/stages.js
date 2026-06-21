@@ -1,7 +1,135 @@
-import stages from "../lib/stages.js";
+import base, { TABLES } from "../lib/airtable.js";
 
-export default function handler(req, res) {
+export default async function handler(req, res){
 
-    res.status(200).json(stages);
+    try{
+
+        const matches =
+            await base(TABLES.matches)
+                .select({
+                    sort: [
+                        {
+                            field: "match_date",
+                            direction: "asc"
+                        }
+                    ]
+                })
+                .all();
+
+        const stagesMap = {};
+
+        let firstGroupDate = null;
+
+        matches.forEach(match => {
+
+            const stage =
+                match.fields.stage;
+
+            const date =
+                match.fields.match_date;
+
+            if(
+                stage ===
+                "Group Phase - Match#1"
+            ){
+
+                if(
+                    !firstGroupDate ||
+                    date < firstGroupDate
+                ){
+
+                    firstGroupDate = date;
+
+                }
+
+            }
+
+        });
+
+        matches.forEach(match => {
+
+            const stage =
+                match.fields.stage;
+
+            const date =
+                match.fields.match_date;
+
+            if(!stage){
+
+                return;
+
+            }
+
+            if(!stagesMap[stage]){
+
+                stagesMap[stage] = {
+
+                    stage,
+
+                    from: date,
+
+                    to: date
+
+                };
+
+            }
+
+            if(date < stagesMap[stage].from){
+
+                stagesMap[stage].from = date;
+
+            }
+
+            if(date > stagesMap[stage].to){
+
+                stagesMap[stage].to = date;
+
+            }
+
+        });
+
+        const stages = [];
+
+        if(firstGroupDate){
+
+            stages.push({
+
+                stage:
+                    "Before World Cup Start",
+
+                from:
+                    matches[0].fields.match_date,
+
+                to:
+                    new Date(
+                        new Date(firstGroupDate)
+                        .getTime() - 86400000
+                    )
+                    .toISOString()
+                    .slice(0,10)
+
+            });
+
+        }
+
+        stages.push(
+            ...Object.values(stagesMap)
+        );
+
+        res.status(200).json(stages);
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        res.status(500).json({
+
+            error:
+                error.message
+
+        });
+
+    }
 
 }
