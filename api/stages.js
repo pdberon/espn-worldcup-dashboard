@@ -90,38 +90,60 @@ export default async function handler(req, res){
 
         const stages = [];
 
-                if(firstGroupDate){
-                
-                    const d =
-                        new Date(
-                            firstGroupDate +
-                            "T12:00:00"
-                        );
-                
-                    d.setDate(
-                        d.getDate() - 1
-                    );
-                
-                    const beforeDate =
-                        d.toISOString()
-                         .slice(0,10);
-                
-                    stages.push({
-                
-                        stage:
-                            "Before World Cup Start",
-                
-                        from:
-                            matches[0]
-                                .fields
-                                .match_date,
-                
-                        to:
-                            beforeDate
-                
-                    });
-                
-                }
+             if(firstGroupDate){
+
+    const d =
+        new Date(
+            firstGroupDate +
+            "T12:00:00"
+        );
+
+    d.setDate(
+        d.getDate() - 1
+    );
+
+    const beforeDate =
+        d.toISOString()
+         .slice(0,10);
+
+    let earliestDate = null;
+
+    matches.forEach(match => {
+
+        const stage =
+            match.fields.stage;
+
+        const date =
+            match.fields.match_date;
+
+        if(
+            !stage &&
+            (
+                !earliestDate ||
+                date < earliestDate
+            )
+        ){
+
+            earliestDate = date;
+
+        }
+
+    });
+
+    stages.push({
+
+        stage:
+            "Before World Cup Start",
+
+        from:
+            earliestDate,
+
+        to:
+            beforeDate
+
+    });
+
+}
 
      stages.push(
     ...Object.values(stagesMap)
