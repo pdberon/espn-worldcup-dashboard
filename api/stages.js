@@ -130,6 +130,80 @@ export default async function handler(req, res){
 
     });
 
+
+const groupStages = [
+
+    "Group Phase - Match#1",
+    "Group Phase - Match#2",
+    "Group Phase - Match#3"
+
+];
+
+const playoffStages = [
+
+    "Round of 32 - 16vos de final",
+    "Round of 16 - Octavos de Final",
+    "Quarterfinals - Cuartos de final",
+    "Semi-Finals - Semifinales",
+    "Third Place - Tercer Puesto",
+    "Final"
+
+];
+
+const groupData =
+    Object.values(stagesMap)
+        .filter(
+            s => groupStages.includes(s.stage)
+        );
+
+if(groupData.length){
+
+    stages.push({
+
+        stage:
+            "Group Phase",
+
+        from:
+            groupData[0].from,
+
+        to:
+            groupData[groupData.length - 1].to
+
+    });
+
+}
+
+const playoffData =
+    Object.values(stagesMap)
+        .filter(
+            s => playoffStages.includes(s.stage)
+        )
+        .sort(
+            (a,b) =>
+                a.from.localeCompare(b.from)
+        );
+
+if(playoffData.length){
+
+    stages.push({
+
+        stage:
+            "Playoff Phase",
+
+        from:
+            playoffData[0].from,
+
+        to:
+            playoffData[
+                playoffData.length - 1
+            ].to
+
+    });
+
+}
+
+
+                 
     stages.push({
 
         stage:
