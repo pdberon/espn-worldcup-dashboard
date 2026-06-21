@@ -145,6 +145,39 @@ export default async function handler(req, res){
 
 }
 
+        let lastDate = null;
+
+matches.forEach(match => {
+
+    const date =
+        match.fields.match_date;
+
+    if(
+        !lastDate ||
+        date > lastDate
+    ){
+
+        lastDate = date;
+
+    }
+
+});
+
+stages.push({
+
+    stage:
+        "Full World Cup",
+
+    from:
+        firstGroupDate,
+
+    to:
+        lastDate
+
+});
+
+        
+
      stages.push(
     ...Object.values(stagesMap)
         .sort(
