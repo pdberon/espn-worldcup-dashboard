@@ -230,6 +230,92 @@ const playoffStages = [
 
 ];
 
+
+const stages = [];
+
+let lastDate = null;
+let earliestDate = null;
+
+matches.forEach(match => {
+
+    const stage =
+        match.fields.stage;
+
+    const date =
+        match.fields.match_date;
+
+    if (
+        !lastDate ||
+        date > lastDate
+    ) {
+
+        lastDate = date;
+
+    }
+
+    if (
+        !stage &&
+        (
+            !earliestDate ||
+            date < earliestDate
+        )
+    ) {
+
+        earliestDate = date;
+
+    }
+
+});
+
+if (
+    earliestDate &&
+    firstGroupDate
+) {
+
+    const d =
+        new Date(
+            firstGroupDate +
+            "T12:00:00"
+        );
+
+    d.setDate(
+        d.getDate() - 1
+    );
+
+    stages.push({
+
+        stage:
+            "Before World Cup Start",
+
+        from:
+            earliestDate,
+
+        to:
+            d.toISOString().slice(0,10)
+
+    });
+
+}
+
+const groupStages = [
+
+    "Group Phase - Match#1",
+    "Group Phase - Match#2",
+    "Group Phase - Match#3"
+
+];
+
+const playoffStages = [
+
+    "Round of 32 - 16vos de final",
+    "Round of 16 - Octavos de Final",
+    "Quarterfinals - Cuartos de final",
+    "Semi-Finals - Semifinales",
+    "Third Place - Tercer Puesto",
+    "Final"
+
+];
+
 const groupData =
     Object.values(stagesMap)
         .filter(
@@ -245,7 +331,7 @@ const groupData =
                 )
         );
 
-if (groupData.length) {
+if(groupData.length){
 
     stages.push({
 
@@ -279,7 +365,7 @@ const playoffData =
                 )
         );
 
-if (playoffData.length) {
+if(playoffData.length){
 
     stages.push({
 
@@ -320,19 +406,20 @@ if (
 
 stages.push(
 
-    ...Object.values(
-        stagesMap
-    ).sort(
-
-        (a,b) =>
-            a.from.localeCompare(
-                b.from
-            )
-
-    )
+    ...Object.values(stagesMap)
+        .sort(
+            (a,b) =>
+                a.from.localeCompare(
+                    b.from
+                )
+        )
 
 );
 
+
+
+
+        
         res.status(200).json(stages);
 
     }
