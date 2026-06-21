@@ -121,6 +121,84 @@ async function loadDashboard(
 
 }
 
+async function loadStages(){
+
+    try{
+
+        const response =
+            await fetch(
+                "/api/stages"
+            );
+
+        const stages =
+            await response.json();
+
+        const select =
+            document.getElementById(
+                "stageFilter"
+            );
+
+        stages.forEach(stage => {
+
+            select.innerHTML += `
+                <option value="${stage.stage}">
+                    ${stage.stage}
+                </option>
+            `;
+
+        });
+
+        select.addEventListener(
+            "change",
+            () => {
+
+                const selected =
+                    stages.find(
+                        s =>
+                            s.stage ===
+                            select.value
+                    );
+
+if(!selected){
+
+    return;
+
+}
+                document
+                    .getElementById(
+                        "fromDate"
+                    )
+                    .value =
+                    selected.from;
+
+                document
+                    .getElementById(
+                        "toDate"
+                    )
+                    .value =
+                    selected.to;
+
+                loadDashboard(
+                    selected.from,
+                    selected.to
+                );
+
+            }
+        );
+
+    }
+    catch(error){
+
+        console.error(error);
+
+    }
+
+}
+
+
+
+
+
 function renderKpis(kpis){
 
     document.getElementById(
@@ -581,58 +659,4 @@ document
 
 
 
-    async function loadStages(){
 
-    const response =
-        await fetch("/api/stages");
-
-    const stages =
-        await response.json();
-
-    const select =
-        document.getElementById(
-            "stageFilter"
-        );
-
-    stages.forEach(stage => {
-
-        select.innerHTML += `
-            <option value="${stage.stage}">
-                ${stage.stage}
-            </option>
-        `;
-
-    });
-
-    select.addEventListener(
-        "change",
-        () => {
-
-            const selected =
-                stages.find(
-                    s =>
-                        s.stage ===
-                        select.value
-                );
-
-            if(!selected) return;
-
-            document.getElementById(
-                "fromDate"
-            ).value = selected.from;
-
-            document.getElementById(
-                "toDate"
-            ).value = selected.to;
-
-            loadDashboard(
-                selected.from,
-                selected.to
-            );
-
-        }
-    );
-
-}
-
-});
