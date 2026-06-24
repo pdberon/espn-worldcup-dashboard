@@ -571,13 +571,7 @@ const canvas =
     
     });
 
-    document
-        .getElementById("exportPdfBtn")
-        ?.addEventListener(
-            "click",
-            exportPdf
-        );
-    
+        
 const finalCanvas =
     document.createElement('canvas');
 
@@ -660,11 +654,34 @@ ctx.drawImage(
 controls.style.visibility = '';
 });
 
-
+document
+.getElementById("exportPdfBtn")
+?.addEventListener(
+    "click",
+    exportPdf
+);
 document
 .querySelectorAll(
     'input[type="date"]'
 )
+.forEach(input => {
+
+    input.addEventListener(
+        "click",
+        () => {
+
+            if(
+                input.showPicker
+            ){
+
+                input.showPicker();
+
+            }
+
+        }
+    );
+
+});
 
     function pdfDate(dateStr){
 
