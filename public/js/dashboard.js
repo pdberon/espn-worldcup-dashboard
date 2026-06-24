@@ -26,13 +26,7 @@ async function loadDates(){
         const summary =
             await response.json();
 
-        currentData = data;
-        currentFrom = from;
-        currentTo = to;
-
-        renderKpis(
-            data.kpis
-        );
+        
 
         
         const fromInput =
@@ -664,24 +658,7 @@ document
 .querySelectorAll(
     'input[type="date"]'
 )
-.forEach(input => {
 
-    input.addEventListener(
-        "click",
-        () => {
-
-            if(
-                input.showPicker
-            ){
-
-                input.showPicker();
-
-            }
-
-        }
-    );
-
-});
 
     function pdfDate(dateStr){
 
