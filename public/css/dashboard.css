@@ -107,10 +107,10 @@ body{
 
 .kpi-grid{
     display:grid;
-    grid-template-columns:repeat(3,240px);
+    grid-template-columns:repeat(3,320px);
     justify-content:center;
-    gap:60px 60px;
-    margin:60px auto;
+    gap:70px 70px;
+    margin:70px auto;
 }
 
 
@@ -123,6 +123,8 @@ body{
     padding:10px;
 
     text-align:center;
+    
+    min-width:320px;
 
     backdrop-filter:none;
 
@@ -711,4 +713,14 @@ td:not(:first-child){
 
 .export-mode .panel{
     max-width:950px;
+}
+
+.export-mode .kpi-grid{
+    width:100%;
+    max-width:1200px;
+    grid-template-columns:1fr 1fr 1fr;
+}
+
+.export-mode .kpi-card{
+    min-width:340px;
 }
