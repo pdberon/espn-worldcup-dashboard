@@ -107,11 +107,10 @@ body{
 
 .kpi-grid{
     display:grid;
-    grid-template-columns:repeat(3,1fr);
-    width:100%;
-    max-width:1500px;
-    margin:90px auto;
-    gap:80px;
+    grid-template-columns:repeat(3,280px);
+    justify-content:center;
+    gap:90px 80px;
+    margin:70px auto;
 }
 
 
@@ -123,11 +122,9 @@ body{
 
     padding:10px;
 
+    width:280px;
+    min-width:280px;
     text-align:center;
-    
-    min-width:0;
-    
-    width:100%;
 
     backdrop-filter:none;
 
@@ -135,29 +132,29 @@ body{
 
 .kpi-label{
 
-    font-size:24px;
-
-    line-height:1.15;
-
-    letter-spacing:2px;
+    font-size:15px;
 
     font-weight:700;
 
-    white-space:normal;
+    letter-spacing:1px;
 
-    max-width:100%;
+    line-height:1.15;
+
+    text-transform:uppercase;
+
+    color:rgba(255,255,255,.9);
 
 }
 
 .kpi-value{
 
-    font-size:92px;
-
-    white-space:nowrap;
+    font-size:72px;
 
     font-weight:900;
 
     line-height:1;
+
+    white-space:nowrap;
 
     text-shadow:
         0 0 25px rgba(0,0,0,.95),
@@ -720,9 +717,8 @@ td:not(:first-child){
 }
 
 .export-mode .kpi-grid{
-    width:100%;
-    max-width:1200px;
-    grid-template-columns:1fr 1fr 1fr;
+    grid-template-columns:repeat(3,320px);
+    gap:70px 60px;
 }
 
 .export-mode .kpi-card{
@@ -730,15 +726,16 @@ td:not(:first-child){
 }
 
 .export-mode .panel h3{
-    font-size:44px;
+    font-size:34px;
 }
 
 .export-mode th{
-    font-size:30px;
+    font-size:22px;
 }
 
 .export-mode td{
-    font-size:28px;
+    font-size:21px;
+    font-weight:600;
 }
 
 .export-mode .sources-footer{
@@ -746,11 +743,11 @@ td:not(:first-child){
 }
 
 .export-mode .kpi-label{
-    font-size:26px;
+    font-size:18px;
 }
 
 .export-mode .kpi-value{
-    font-size:96px;
+    font-size:82px;
 }
 
 .export-mode .youtube-card{
@@ -762,5 +759,5 @@ td:not(:first-child){
 }
 
 .export-mode .youtube-card strong{
-    font-size:56px;
+    font-size:44px;
 }
