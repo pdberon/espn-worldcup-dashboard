@@ -761,3 +761,47 @@ td:not(:first-child){
 .export-mode .youtube-card strong{
     font-size:44px;
 }
+
+.pdf-slide{
+    width:1600px;
+    height:900px;
+    padding:80px;
+    box-sizing:border-box;
+    background:url("/assets/worldcup-bg.png");
+    background-size:cover;
+    color:white;
+    position:relative;
+}
+
+.pdf-title{
+    text-align:center;
+    margin-top:140px;
+}
+
+.pdf-title img{
+    width:700px;
+}
+
+.pdf-subtitle{
+    font-size:48px;
+    font-weight:700;
+    margin-top:30px;
+}
+
+.pdf-footer{
+    position:absolute;
+    bottom:40px;
+    left:60px;
+    right:60px;
+    font-size:18px;
+    color:rgba(255,255,255,.75);
+}
+
+.confidential{
+    position:absolute;
+    bottom:35px;
+    right:50px;
+    font-size:22px;
+    opacity:.18;
+    letter-spacing:3px;
+}
