@@ -877,3 +877,104 @@ td:not(:first-child){
     font-weight:900;
 }
 
+/* =========================
+   PDF SLIDES
+========================= */
+
+.pdf-hidden{
+    position:absolute;
+    left:-99999px;
+    top:0;
+}
+
+.pdf-slide{
+    width:1600px;
+    height:900px;
+    background:
+        url('/assets/worldcup-bg.png')
+        center center / cover no-repeat;
+
+    color:#fff;
+    position:relative;
+    padding:80px;
+    box-sizing:border-box;
+
+    font-family:Arial,sans-serif;
+}
+
+.pdf-logo{
+    width:550px;
+    display:block;
+    margin:80px auto 40px;
+}
+
+.pdf-main-title{
+    text-align:center;
+    font-size:52px;
+    font-weight:700;
+}
+
+.pdf-subtitle{
+    text-align:center;
+    font-size:34px;
+    margin-top:20px;
+}
+
+.pdf-range{
+    text-align:center;
+    font-size:28px;
+    margin-top:40px;
+    color:#d4af37;
+}
+
+.pdf-slide-title{
+    font-size:42px;
+    font-weight:700;
+    margin-bottom:50px;
+}
+
+.pdf-footer{
+    position:absolute;
+    bottom:35px;
+    left:80px;
+
+    font-size:18px;
+    color:#cccccc;
+}
+
+.confidential{
+    position:absolute;
+    bottom:35px;
+    right:50px;
+
+    font-size:16px;
+    color:rgba(255,255,255,.25);
+
+    letter-spacing:3px;
+}
+
+.pdf-kpis{
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:60px;
+
+    margin-top:80px;
+}
+
+.pdf-kpi{
+    text-align:center;
+}
+
+.pdf-kpi-label{
+    font-size:28px;
+    text-transform:uppercase;
+    letter-spacing:2px;
+}
+
+.pdf-kpi-value{
+    font-size:90px;
+    font-weight:900;
+}
