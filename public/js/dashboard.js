@@ -692,9 +692,39 @@ function slideFooter(source){
 
 }
 
+function createPdfSlide(){
+
+    const div =
+        document.createElement("div");
+
+    div.className =
+        "pdf-slide pdf-hidden";
+
+    document.body.appendChild(div);
+
+    return div;
+
+}
+
+async function slideToImage(slide){
+
+    const canvas =
+        await html2canvas(slide,{
+            scale:2,
+            useCORS:true
+        });
+
+    slide.remove();
+
+    return canvas.toDataURL("image/png");
+
+}
+
+
 async function exportPdf(){
 
-    const { jsPDF } = window.jspdf;
+    const { jsPDF } =
+        window.jspdf;
 
     const pdf =
         new jsPDF(
@@ -703,33 +733,29 @@ async function exportPdf(){
             [1600,900]
         );
 
-    const dashboard =
-        document.getElementById(
-            "export-container"
-        );
+    // PORTADA
 
-    const controls =
-        document.querySelector(
-            ".date-range-container"
-        );
+    let slide =
+        createPdfSlide();
 
-    controls.style.visibility =
-        "hidden";
+    slide.innerHTML = `
+        <div class="pdf-title">
+            <img src="/assets/ESPN_MUNDIAL_H_R.png">
+            <div class="pdf-subtitle">
+                DIGITAL LATAM REPORT
+            </div>
+            <div style="font-size:34px;margin-top:30px;">
+                ${pdfRange()}
+            </div>
+        </div>
 
-    const canvas =
-        await html2canvas(
-            dashboard,
-            {
-                scale:2,
-                useCORS:true
-            }
-        );
-
-    controls.style.visibility =
-        "";
+        <div class="confidential">
+            CONFIDENTIAL
+        </div>
+    `;
 
     pdf.addImage(
-        canvas.toDataURL("image/png"),
+        await slideToImage(slide),
         "PNG",
         0,
         0,
@@ -737,9 +763,93 @@ async function exportPdf(){
         900
     );
 
-    pdf.save(
-        "ESPN_Digital_Report.pdf"
+    // EXECUTIVE SUMMARY
+
+    pdf.addPage();
+
+    slide =
+        createPdfSlide();
+
+    slide.innerHTML = `
+        <div class="pdf-slide-title">
+            EXECUTIVE SUMMARY
+        </div>
+
+        <div class="pdf-kpis">
+
+            <div class="pdf-kpi">
+                <div class="pdf-kpi-label">
+                    Engagement
+                </div>
+                <div class="pdf-kpi-value">
+                    ${formatNumber(currentData.kpis.engagement)}
+                </div>
+            </div>
+
+            <div class="pdf-kpi">
+                <div class="pdf-kpi-label">
+                    Posts
+                </div>
+                <div class="pdf-kpi-value">
+                    ${formatNumber(currentData.kpis.posts)}
+                </div>
+            </div>
+
+            <div class="pdf-kpi">
+                <div class="pdf-kpi-label">
+                    Video Views
+                </div>
+                <div class="pdf-kpi-value">
+                    ${formatNumber(currentData.kpis.totalVideoViews)}
+                </div>
+            </div>
+
+            <div class="pdf-kpi">
+                <div class="pdf-kpi-label">
+                    Page Views
+                </div>
+                <div class="pdf-kpi-value">
+                    ${formatNumber(currentData.kpis.pageViews)}
+                </div>
+            </div>
+
+            <div class="pdf-kpi">
+                <div class="pdf-kpi-label">
+                    Content Starts
+                </div>
+                <div class="pdf-kpi-value">
+                    ${formatNumber(currentData.kpis.contentStarts)}
+                </div>
+            </div>
+
+            <div class="pdf-kpi">
+                <div class="pdf-kpi-label">
+                    Avg Uniques
+                </div>
+                <div class="pdf-kpi-value">
+                    ${formatNumber(currentData.kpis.avgUniqueVisitors)}
+                </div>
+            </div>
+
+        </div>
+
+        <div class="pdf-footer">
+            Sources: All Platforms | ${pdfRange()} | All LATAM
+        </div>
+
+        <div class="confidential">
+            CONFIDENTIAL
+        </div>
+    `;
+
+    pdf.addImage(
+        await slideToImage(slide),
+        "PNG",
+        0,
+        0,
+        1600,
+        900
     );
 
-}
+    
     
