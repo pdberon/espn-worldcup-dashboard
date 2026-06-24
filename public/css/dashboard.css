@@ -130,26 +130,28 @@ body{
 
 .kpi-label{
 
-    font-size:13px;
+    font-size:18px;
 
     letter-spacing:2px;
 
+    font-weight:700;
+
     text-transform:uppercase;
 
-    color:rgba(255,255,255,.85);
+    color:rgba(255,255,255,.9);
 
     text-shadow:
         0 0 10px rgba(0,0,0,.9);
 
-    margin-top:10px;
+    margin-top:12px;
 
 }
 
 .kpi-value{
 
-    font-size:64px;
+    font-size:78px;
 
-    font-weight:800;
+    font-weight:900;
 
     line-height:1;
 
@@ -181,11 +183,9 @@ body{
 
 .panel h3{
 
-    margin-top:0;
+    font-size:32px;
 
-    margin-bottom:20px;
-
-    font-size:22px;
+    font-weight:800;
 
 }
 
@@ -201,7 +201,12 @@ th{
 
     text-align:left;
 
-    padding:12px;
+    font-size:18px;
+
+    font-weight:700;
+
+    padding:16px 12px;
+
 
     border-bottom:
         1px solid
@@ -216,7 +221,9 @@ th{
 
 td{
 
-    padding:12px;
+    font-size:17px;
+
+    padding:15px 12px;
 
     border-bottom:
         1px solid
@@ -269,7 +276,9 @@ td:not(:first-child){
 
     display:block;
 
-    font-size:12px;
+    font-size:16px;
+
+    font-weight:700;
 
     text-transform:uppercase;
 
@@ -281,7 +290,7 @@ td:not(:first-child){
 
 .youtube-card strong{
 
-    font-size:32px;
+    font-size:42px;
 
 }
 
@@ -289,17 +298,19 @@ td:not(:first-child){
 
     margin-top:40px;
 
-    padding-top:15px;
+    padding-top:18px;
 
     border-top:1px solid rgba(212,175,55,.35);
 
     text-align:center;
 
-    font-size:11px;
+    font-size:16px;
 
-    color:rgba(255,255,255,.75);
+    font-weight:600;
 
-    letter-spacing:.5px;
+    color:rgba(255,255,255,.85);
+
+    letter-spacing:1px;
 
 }
 
@@ -670,8 +681,32 @@ td:not(:first-child){
 
 
 .export-mode .page{
-    max-width:950px;
-    padding:60px 140px;
+    max-width:1100px;
+    padding:80px 100px;
+}
+
+.export-mode .kpi-label{
+    font-size:20px;
+}
+
+.export-mode .kpi-value{
+    font-size:90px;
+}
+
+.export-mode th{
+    font-size:18px;
+}
+
+.export-mode td{
+    font-size:17px;
+}
+
+.export-mode .panel h3{
+    font-size:34px;
+}
+
+.export-mode .sources-footer{
+    font-size:18px;
 }
 
 .export-mode .panel{
