@@ -3,6 +3,11 @@ document.addEventListener(
     initDashboard
 );
 
+let currentData = null;
+let currentFrom = null;
+let currentTo = null;
+
+
 async function initDashboard(){
 
     await loadDates();
@@ -83,6 +88,10 @@ async function loadDashboard(
 
         const data =
             await response.json();
+
+        currentData = data;
+        currentFrom = from;
+        currentTo = to;
 
         renderKpis(
             data.kpis
@@ -552,6 +561,13 @@ const canvas =
         windowHeight: dashboard.scrollHeight
     
     });
+
+    document
+        .getElementById("exportPdfBtn")
+        ?.addEventListener(
+            "click",
+            exportPdf
+        );
     
 const finalCanvas =
     document.createElement('canvas');
@@ -640,6 +656,93 @@ document
 .querySelectorAll(
     'input[type="date"]'
 )
+
+    function pdfDate(dateStr){
+
+    const d = new Date(dateStr);
+
+    const months = [
+        "Jan.",
+        "Feb.",
+        "Mar.",
+        "Apr.",
+        "May.",
+        "Jun.",
+        "Jul.",
+        "Aug.",
+        "Sep.",
+        "Oct.",
+        "Nov.",
+        "Dec."
+    ];
+
+    return `${months[d.getMonth()]} ${ordinal(d.getDate())}`;
+
+}
+
+function pdfRange(){
+
+    return `${pdfDate(currentFrom)} to ${pdfDate(currentTo)}`;
+
+}
+
+function slideFooter(source){
+
+    return `Sources: ${source} | ${pdfRange()} | All LATAM`;
+
+}
+
+async function exportPdf(){
+
+    const { jsPDF } = window.jspdf;
+
+    const pdf =
+        new jsPDF(
+            "landscape",
+            "px",
+            [1600,900]
+        );
+
+    const dashboard =
+        document.getElementById(
+            "export-container"
+        );
+
+    const controls =
+        document.querySelector(
+            ".date-range-container"
+        );
+
+    controls.style.visibility =
+        "hidden";
+
+    const canvas =
+        await html2canvas(
+            dashboard,
+            {
+                scale:2,
+                useCORS:true
+            }
+        );
+
+    controls.style.visibility =
+        "";
+
+    pdf.addImage(
+        canvas.toDataURL("image/png"),
+        "PNG",
+        0,
+        0,
+        1600,
+        900
+    );
+
+    pdf.save(
+        "ESPN_Digital_Report.pdf"
+    );
+
+}
+    
 .forEach(input => {
 
     input.addEventListener(
