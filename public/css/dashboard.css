@@ -805,3 +805,75 @@ td:not(:first-child){
     opacity:.18;
     letter-spacing:3px;
 }
+
+.pdf-hidden{
+    position:absolute;
+    left:-99999px;
+    top:0;
+}
+
+.pdf-cards{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:40px;
+    margin-top:60px;
+}
+
+.pdf-card{
+    background:rgba(0,0,0,.45);
+    border:1px solid rgba(255,255,255,.15);
+    border-radius:20px;
+    padding:35px;
+    backdrop-filter:blur(8px);
+}
+
+.pdf-card-title{
+    font-size:30px;
+    font-weight:700;
+    margin-bottom:30px;
+}
+
+.pdf-stat{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:18px;
+}
+
+.pdf-stat-label{
+    font-size:24px;
+    opacity:.8;
+}
+
+.pdf-stat-value{
+    font-size:32px;
+    font-weight:700;
+}
+
+.pdf-slide-title{
+    font-size:52px;
+    font-weight:700;
+    margin-bottom:40px;
+}
+
+.pdf-kpis{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:50px;
+    margin-top:100px;
+}
+
+.pdf-kpi{
+    text-align:center;
+}
+
+.pdf-kpi-label{
+    font-size:28px;
+    margin-bottom:20px;
+    opacity:.85;
+}
+
+.pdf-kpi-value{
+    font-size:72px;
+    font-weight:900;
+}
+
