@@ -26,6 +26,15 @@ async function loadDates(){
         const summary =
             await response.json();
 
+        currentData = data;
+        currentFrom = from;
+        currentTo = to;
+
+        renderKpis(
+            data.kpis
+        );
+
+        
         const fromInput =
             document.getElementById(
                 "fromDate"
