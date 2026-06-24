@@ -654,10 +654,7 @@ document
     "click",
     exportPdf
 );
-document
-.querySelectorAll(
-    'input[type="date"]'
-)
+
 
 
     function pdfDate(dateStr){
@@ -746,21 +743,3 @@ async function exportPdf(){
 
 }
     
-.forEach(input => {
-
-    input.addEventListener(
-        "click",
-        () => {
-
-            if(
-                input.showPicker
-            ){
-
-                input.showPicker();
-
-            }
-
-        }
-    );
-
-});
