@@ -719,7 +719,18 @@ async function slideToImage(slide){
     return canvas.toDataURL("image/png");
 
 }
+   async  function addPdfPage(pdf, image){
 
+    pdf.addImage(
+        image,
+        "PNG",
+        0,
+        0,
+        1600,
+        900
+    );
+
+}
 
 async function exportPdf(){
 
@@ -739,28 +750,30 @@ async function exportPdf(){
         createPdfSlide();
 
     slide.innerHTML = `
-        <div class="pdf-title">
-            <img src="/assets/ESPN_MUNDIAL_H_R.png">
-            <div class="pdf-subtitle">
+        <div class="pdf-slide">
+
+            <img
+                src="/assets/ESPN_MUNDIAL_H_R.png"
+                class="pdf-logo">
+
+            <div class="pdf-main-title">
                 DIGITAL LATAM REPORT
             </div>
-            <div style="font-size:34px;margin-top:30px;">
-                ${pdfRange()}
-            </div>
-        </div>
 
-        <div class="confidential">
-            CONFIDENTIAL
+            <div class="pdf-range">
+                LATAM • ${pdfRange()}
+            </div>
+
+            <div class="confidential">
+                CONFIDENTIAL
+            </div>
+
         </div>
     `;
 
-    pdf.addImage(
-        await slideToImage(slide),
-        "PNG",
-        0,
-        0,
-        1600,
-        900
+    addPdfPage(
+        pdf,
+        await slideToImage(slide)
     );
 
     // EXECUTIVE SUMMARY
@@ -771,85 +784,90 @@ async function exportPdf(){
         createPdfSlide();
 
     slide.innerHTML = `
-        <div class="pdf-slide-title">
-            EXECUTIVE SUMMARY
-        </div>
+        <div class="pdf-slide">
 
-        <div class="pdf-kpis">
-
-            <div class="pdf-kpi">
-                <div class="pdf-kpi-label">
-                    Engagement
-                </div>
-                <div class="pdf-kpi-value">
-                    ${formatNumber(currentData.kpis.engagement)}
-                </div>
+            <div class="pdf-slide-title">
+                Executive Summary
             </div>
 
-            <div class="pdf-kpi">
-                <div class="pdf-kpi-label">
-                    Posts
+            <div class="pdf-kpis">
+
+                <div class="pdf-kpi">
+                    <div class="pdf-kpi-label">
+                        Engagement
+                    </div>
+                    <div class="pdf-kpi-value">
+                        ${formatNumber(currentData.kpis.engagement)}
+                    </div>
                 </div>
-                <div class="pdf-kpi-value">
-                    ${formatNumber(currentData.kpis.posts)}
+
+                <div class="pdf-kpi">
+                    <div class="pdf-kpi-label">
+                        Posts
+                    </div>
+                    <div class="pdf-kpi-value">
+                        ${formatNumber(currentData.kpis.posts)}
+                    </div>
                 </div>
+
+                <div class="pdf-kpi">
+                    <div class="pdf-kpi-label">
+                        Video Views
+                    </div>
+                    <div class="pdf-kpi-value">
+                        ${formatNumber(currentData.kpis.totalVideoViews)}
+                    </div>
+                </div>
+
+                <div class="pdf-kpi">
+                    <div class="pdf-kpi-label">
+                        Page Views
+                    </div>
+                    <div class="pdf-kpi-value">
+                        ${formatNumber(currentData.kpis.pageViews)}
+                    </div>
+                </div>
+
+                <div class="pdf-kpi">
+                    <div class="pdf-kpi-label">
+                        Content Starts
+                    </div>
+                    <div class="pdf-kpi-value">
+                        ${formatNumber(currentData.kpis.contentStarts)}
+                    </div>
+                </div>
+
+                <div class="pdf-kpi">
+                    <div class="pdf-kpi-label">
+                        Avg Uniques
+                    </div>
+                    <div class="pdf-kpi-value">
+                        ${formatNumber(currentData.kpis.avgUniqueVisitors)}
+                    </div>
+                </div>
+
             </div>
 
-            <div class="pdf-kpi">
-                <div class="pdf-kpi-label">
-                    Video Views
-                </div>
-                <div class="pdf-kpi-value">
-                    ${formatNumber(currentData.kpis.totalVideoViews)}
-                </div>
+            <div class="pdf-footer">
+                Sources: All Platforms | ${pdfRange()} | All LATAM
             </div>
 
-            <div class="pdf-kpi">
-                <div class="pdf-kpi-label">
-                    Page Views
-                </div>
-                <div class="pdf-kpi-value">
-                    ${formatNumber(currentData.kpis.pageViews)}
-                </div>
+            <div class="confidential">
+                CONFIDENTIAL
             </div>
 
-            <div class="pdf-kpi">
-                <div class="pdf-kpi-label">
-                    Content Starts
-                </div>
-                <div class="pdf-kpi-value">
-                    ${formatNumber(currentData.kpis.contentStarts)}
-                </div>
-            </div>
-
-            <div class="pdf-kpi">
-                <div class="pdf-kpi-label">
-                    Avg Uniques
-                </div>
-                <div class="pdf-kpi-value">
-                    ${formatNumber(currentData.kpis.avgUniqueVisitors)}
-                </div>
-            </div>
-
-        </div>
-
-        <div class="pdf-footer">
-            Sources: All Platforms | ${pdfRange()} | All LATAM
-        </div>
-
-        <div class="confidential">
-            CONFIDENTIAL
         </div>
     `;
 
-    pdf.addImage(
-        await slideToImage(slide),
-        "PNG",
-        0,
-        0,
-        1600,
-        900
+    addPdfPage(
+        pdf,
+        await slideToImage(slide)
     );
 
-    }
-    
+    pdf.save(
+        `world-cup-report-${Date.now()}.pdf`
+    );
+
+}
+
+
